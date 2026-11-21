@@ -1,6 +1,6 @@
 {
   "$comment": "Voorgestelde landingspagina's (richting A, 'probeer direct': de pagina opent met een echte, nagekeken examenopgave en één knop 'Start gratis' naar het platform; geen prijzen). De zaterdagrun (/seo-weekly) zet hier elke week twee à drie varianten bij en werkt de status bij; ze verschijnen als rij op /admin/seo, achter het filter Landing pages. Ids nooit hergebruiken; een idee dat afvalt krijgt status 'dismissed' en blijft staan. Teksten zijn Engels (besluit eigenaar, 26-10): ze zijn voor de eigenaar.",
-  "updated": "2026-11-16",
+  "updated": "2026-11-21",
   "rules": {
     "direction": "A",
     "suggestions_per_week": [
@@ -110,6 +110,29 @@
       "owner": "amber",
       "note": "Built 16-11, reviewed by Amber and live 16-11 (owner chose not to wait for week 48): indexable (nl only), in the sitemap.",
       "live": "2026-11-16"
+    },
+    {
+      "id": "2026-W47-ona-oefenen",
+      "created": "2026-11-21",
+      "week": "2026-W47",
+      "status": "suggested",
+      "kind": "new",
+      "path": "/nl/ona-oefenen",
+      "query": "ona examen oefenen",
+      "title": "ONA-examen oefenen: begin met één portfoliokaart",
+      "variant": "Hero opens on one ONA portfolio card from data/ona/cards.ts with its check, and a single \"Start gratis\" button into the ONA module. Different onderdeel from the herexamen (retake) and voorbeeldvragen (sample questions) pages.",
+      "demand": 55,
+      "evidence": "\"ona examen oefenen\" had 55 impressions at position 19.5 over 22-10..18-11 (gsc.json, W47). No page of ours is built around ONA; the only related page is the guide /nl/inburgering/pvt-map-en-ona.",
+      "competitor": "Not measured this week (competitors.json was not read for ONA).",
+      "why": "ONA went live on 14-10 and a searcher already finds us for it at page 2. A page that starts with something to do answers a specific question that no practice page covers.",
+      "checks": [
+        false,
+        true,
+        false,
+        false
+      ],
+      "owner": "amber",
+      "note": "Blocked: data/ona/ is still 'concept' until Amber has checked it, so the hero item is not reviewed content. The ONA facts (what ONA is, who must take it) are not in SEO/facts.md yet. Do not build before both are done. Only one new URL this week; a second candidate (\"a2 schrijven\", 124 impressions at 21.5) is an upgrade of an existing practice page and stays out by owner's rule of 13-11."
     }
   ]
 }
