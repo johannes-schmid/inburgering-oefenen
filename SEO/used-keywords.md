@@ -60,3 +60,5 @@ Reserved so a future session doesn't target them from a second angle:
 - `schrijven examen inburgering` — nog vrij; de tips-variant is geclaimd door `veelgemaakte-fouten-schrijven-examen-a2`
 - `spreken examen inburgering` — eigenaar is `/taalexamens/spreken-examen` (de tips-post is er op 2026-11-03 in opgegaan)
 - `wet inburgering 2021` — blocked on reading the 2025-10-21 statute amendment
+- `hoe lang duurt inburgeren` — `/blog/hoe-lang-duurt-inburgeren` (live 2026-11-23, nagekeken door Amber; cijfers uit `facts.md` §15)
+- `hoeveel fouten mag je maken inburgeringsexamen` — `/blog/hoeveel-fouten-inburgeringsexamen` (live 2026-11-23, nagekeken door Amber). Blogpost en geen gids: `tests-unit/guides.test.ts` weigert in een gids elke vermelding van "18 van de 25", en deze post moet het getal kunnen noemen om het te weerleggen.

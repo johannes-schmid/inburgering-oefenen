@@ -210,7 +210,8 @@
     "not_translated": "This article has not been translated yet. You are reading the Dutch version below.",
     "toc_title": "In this article",
     "read_in_dutch": "Read the article in Dutch",
-    "mt_notice": "Machine translation: this post was translated automatically from the reviewed Dutch text and has not been checked by a person."
+    "mt_notice": "Machine translation: this post was translated automatically from the reviewed Dutch text and has not been checked by a person.",
+    "draft_notice": "Draft. This article has not been reviewed by the teacher yet, so it is not listed and not in Google."
   },
   "oefenvragen": {
     "meta_title": "KNM Practice Questions by Topic — Targeted Practice | Inburgering Oefenen",

@@ -67,6 +67,8 @@ const POST_SLUGS: Record<string, Translated> = {
   'veelgemaakte-fouten-schrijven-examen-a2': { en: 'common-mistakes-writing-exam-a2',        ar: 'أخطاء-شائعة-امتحان-الكتابة-a2' },
   'want-of-omdat':                       { en: 'want-or-omdat-dutch',                     ar: 'want-أم-omdat' },
   'wederkerende-werkwoorden-nederlands': { en: 'dutch-reflexive-verbs',                   ar: 'الأفعال-الانعكاسية-الهولندية' },
+  'hoe-lang-duurt-inburgeren':           { en: 'how-long-does-integration-take',          ar: 'كم-يستغرق-الاندماج' },
+  'hoeveel-fouten-inburgeringsexamen':   { en: 'how-many-mistakes-integration-exam',      ar: 'كم-خطأ-في-امتحان-الاندماج' },
 };
 
 /**

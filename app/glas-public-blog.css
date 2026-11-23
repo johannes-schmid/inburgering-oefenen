@@ -30,6 +30,54 @@
   .g-blog-summary .facts-table tr:first-child td:first-child { border-start-start-radius: var(--r-sm); }
   .g-blog-summary .facts-table tr:first-child td:last-child { border-start-end-radius: var(--r-sm); }
 
+  /* Een post van na 23-11 levert de samenvatting als `<b>` + `<ul>`. De `ul` staat buiten
+     `.article-body`, dus hij krijgt zijn opsommingstekens hier: zonder dit zijn het losse regels. */
+  .g-blog-summary ul { list-style: disc; padding-inline-start: 20px; gap: 7px; font-size: 1rem; line-height: 1.6; color: var(--ink); }
+  .g-blog-summary ul li::marker { color: var(--navy); }
+
+  /* ---------- grafieken in een artikel (`barChart()` en `stackedBar()` in data/blog-posts.ts) ----------
+     Statisch HTML, geen script: elke waarde staat als tekst naast zijn balk, dus de grafiek is ook
+     zonder kleur en zonder muis te lezen. Maten in logische eigenschappen, zodat hij onder `ar`
+     vanzelf spiegelt. `--w` is de breedte van een balk en `--ref` de plek van de referentielijn,
+     beide in procenten van de schaal. */
+  .g-chart { margin: 26px 0 14px; padding: 20px 18px 18px; border-radius: var(--r-lg); background: var(--mist); }
+  @media (min-width: 640px) { .g-chart { padding: 24px 26px 22px; } }
+  .g-chart-title { font-family: var(--font-headline); font-weight: 700; font-size: 21px !important; letter-spacing: -0.02em; color: var(--navy) !important; margin: 0 0 6px !important; line-height: 1.2 !important; text-wrap: balance; }
+  @media (min-width: 640px) { .g-chart-title { font-size: 24px !important; } }
+  .g-chart-sub { font-size: 15px !important; color: var(--ink-2) !important; margin: 0 0 16px !important; line-height: 1.5 !important; }
+  .g-chart-note { font-size: 0.86rem !important; color: var(--ink-2) !important; margin: 14px 0 0 !important; line-height: 1.5 !important; }
+
+  .g-bars { position: relative; display: grid; gap: 9px; margin: 0; padding: 0; }
+  .g-bars-row { display: grid; grid-template-columns: 3.1em 1fr; align-items: center; gap: 10px; }
+  .g-bars-label { font-size: 0.9rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .g-bars-track { position: relative; height: 26px; }
+  .g-bars-bar {
+    position: absolute; inset-block: 0; inset-inline-start: 0; width: var(--w);
+    background: var(--navy); border-start-end-radius: 4px; border-end-end-radius: 4px;
+    /* Het getal staat vooraan in de balk: aan het eind zou de referentielijn er dwars doorheen lopen. */
+    display: flex; align-items: center; justify-content: flex-start; padding-inline-start: 10px;
+    color: #fff; font-family: var(--font-headline); font-weight: 700; font-size: 0.84rem; font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  /* De referentielijn loopt over alle rijen heen: één lijn, één label erboven. */
+  .g-bars-ref { position: absolute; inset-block: -6px -4px; inset-inline-start: calc(3.1em + 10px + (100% - 3.1em - 10px) * var(--ref)); width: 2px; background: var(--oranje); border-radius: 1px; pointer-events: none; }
+  .g-bars-reflabel { display: flex; align-items: flex-start; gap: 8px; font-size: 0.9rem !important; line-height: 1.45 !important; color: var(--ink); margin: 0 0 12px !important; }
+  .g-bars-reflabel::before { content: ''; width: 2px; height: 1.45em; background: var(--oranje); border-radius: 1px; flex-shrink: 0; }
+
+  .g-stack { display: flex; gap: 2px; height: 34px; border-radius: 8px; overflow: hidden; }
+  .g-stack-seg { flex: var(--n) 1 0; min-width: 4px; }
+  .g-stack-legend { list-style: none !important; margin: 14px 0 0 !important; padding: 0 !important; display: grid !important; gap: 8px !important; }
+  @media (min-width: 560px) { .g-stack-legend { grid-template-columns: 1fr 1fr; column-gap: 22px !important; } }
+  .g-stack-legend li { display: flex !important; align-items: baseline; gap: 9px !important; font-size: 0.93rem !important; line-height: 1.45 !important; color: var(--ink) !important; }
+  .g-stack-legend li::before { content: none !important; }
+  .g-stack-key { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; transform: translateY(1px); }
+  .g-stack-legend b { font-family: var(--font-headline); font-variant-numeric: tabular-nums; color: var(--navy); }
+  /* Vier delen: twee merkkleuren voor de twee uitkomsten die ertoe doen, twee neutrale voor de
+     rest — waarvan één gearceerd, zodat ze ook zonder kleur uit elkaar te houden zijn. */
+  .g-tone-1 { background: var(--navy); }
+  .g-tone-2 { background: var(--ink-3); }
+  .g-tone-3 { background: repeating-linear-gradient(135deg, #b9c4d9 0 4px, #dfe5f0 4px 8px); }
+  .g-tone-4 { background: var(--oranje); }
+
   /* ---------- oefenvragen ---------- */
   .g-blog-card { background: #fff; border-radius: var(--r-lg); padding: 22px; }
   .g-topic {

@@ -81,6 +81,13 @@ export type BlogPost = {
   ctaHref: '/oefenen' | '/premium' | '/docent';
   ctaLabel: string;
   translations?: Partial<Record<'en' | 'ar', PostLocale>>;
+  /**
+   * `'concept'` = geschreven, nog niet door de docent nagekeken. Zo'n post is bereikbaar op zijn
+   * URL (zodat zij hem kan lezen) en verder nergens: `noindex`, niet in het blogoverzicht, niet op
+   * `/gidsen`, niet in de sitemap, niet in `llms.txt`, zonder structured data en zonder de regel
+   * "nagekeken door". Zelfde afspraak als `status: 'draft'` bij een kennisgids. Weglaten = live.
+   */
+  status?: 'concept';
 };
 
 /** Resolved content for one locale, with Dutch as the fallback for every optional field. */
@@ -110,6 +117,12 @@ const SRC_REGLEMENT = 'https://www.inburgeren.nl/images/examenreglement.pdf';
 const SRC_OEFENEN = 'https://www.inburgeren.nl/examen-doen/oefenen.jsp';
 const SRC_UITSLAG = 'https://www.inburgeren.nl/examen-doen/uitslag.jsp';
 const SRC_BETALEN = 'https://www.inburgeren.nl/inburgeren-betalen/index.jsp';
+const SRC_DUO_CIJFERS = 'https://duo.nl/data/Totaal%20Nederland.pdf';
+const SRC_ROUTES = 'https://www.inburgeren.nl/u-gaat-inburgeren/';
+const SRC_EXTRA_TIJD = 'https://www.inburgeren.nl/extra-tijd/';
+const SRC_BOETE = 'https://www.inburgeren.nl/u-gaat-inburgeren/boete.jsp';
+/** De raadpleegdatum van de twee posts van 23-11-2026 (`SEO/facts.md` §2 en §15). */
+const CHECKED_NOV = '23-11-2026';
 
 /**
  * Renders the fact-box markup documented in app/globals.css. Keeps sources uniform.
@@ -164,6 +177,43 @@ function foutGoed(fout: string[], goed: string[], labels: [string, string] = ['F
  */
 function nlEx(s: string): string {
   return `<span dir="ltr" lang="nl">${s}</span>`;
+}
+
+/**
+ * Liggende balken met één referentielijn — voor "hoe verhoudt dit zich tot die ene grens".
+ * Statisch HTML (`.g-chart`, `.g-bars` in app/glas-public-blog.css): elke waarde staat als tekst in
+ * zijn balk, dus het plaatje is ook zonder kleur te lezen en een schermlezer leest gewoon de rijen.
+ * `max` is het einde van de schaal; de schaal begint altijd op 0, anders liegt de lengte.
+ */
+function barChart(o: {
+  title: string; sub: string; rows: [label: string, value: number][];
+  max: number; unit: string; ref: number; refLabel: string; note?: string;
+}): string {
+  const rows = o.rows.map(([label, value]) =>
+    `<div class="g-bars-row"><span class="g-bars-label">${label}</span>` +
+    `<span class="g-bars-track"><span class="g-bars-bar" style="--w:${((value / o.max) * 100).toFixed(1)}%">${value} ${o.unit}</span></span></div>`,
+  ).join('');
+  return `<figure class="g-chart"><p class="g-chart-title">${o.title}</p><p class="g-chart-sub">${o.sub}</p>` +
+    `<p class="g-bars-reflabel">${o.refLabel}</p>` +
+    `<div class="g-bars">${rows}<span class="g-bars-ref" style="--ref:${(o.ref / o.max).toFixed(4)}" aria-hidden="true"></span></div>` +
+    (o.note ? `<p class="g-chart-note">${o.note}</p>` : '') + `</figure>`;
+}
+
+/**
+ * Eén gestapelde balk: delen van een geheel. Hooguit vier delen (`.g-tone-1` … `-4`), in de
+ * volgorde waarin ze worden aangeleverd. De legenda eronder noemt elk deel met zijn aantal — de
+ * kleur is nooit de enige drager.
+ */
+function stackedBar(o: { title: string; sub: string; parts: [label: string, count: number][]; note?: string }): string {
+  const nf = (n: number) => n.toLocaleString('nl-NL');
+  const total = o.parts.reduce((a, [, n]) => a + n, 0);
+  const segs = o.parts.map(([label, n], i) =>
+    `<span class="g-stack-seg g-tone-${i + 1}" style="--n:${n}" title="${label}: ${nf(n)}"></span>`).join('');
+  const legend = o.parts.map(([label, n], i) =>
+    `<li><span class="g-stack-key g-tone-${i + 1}" aria-hidden="true"></span><span><b>${nf(n)}</b> ${label} (${Math.round((n / total) * 100)}%)</span></li>`).join('');
+  return `<figure class="g-chart"><p class="g-chart-title">${o.title}</p><p class="g-chart-sub">${o.sub}</p>` +
+    `<div class="g-stack" aria-hidden="true">${segs}</div><ul class="g-stack-legend">${legend}</ul>` +
+    (o.note ? `<p class="g-chart-note">${o.note}</p>` : '') + `</figure>`;
 }
 
 const POSTS: BlogPost[] = [
@@ -2438,6 +2488,293 @@ ${foutGoed([nlEx('Ik me bereid voor op het examen.'), nlEx('Ik kan beter me conc
       },
     },
   },
+  // ───────────────────────────────────────────────────────────── 6. HOE LANG DUURT INBURGEREN
+  /* Live sinds 23-11-2026: door Amber nagekeken (melding eigenaar, 23-11). De reviewvragen staan in
+   * `seo-agent/briefs/2026-11-23-twee-artikelen.md`.
+   *
+   * Waarom deze post bestaat: DUO publiceert elke vier maanden voortgangscijfers over de Wet
+   * inburgering 2013, en geen enkele concurrent gebruikt ze. Wat er wél rondgaat zijn
+   * slagingspercentages die aanbieders over zichzelf noemen ("85%", elders "82%"). Dit is de enige
+   * officiële dataset, dus de post die ernaar verwijst is de post die geciteerd kan worden.
+   *
+   * Drie dingen die hier bewust NIET staan (`SEO/facts.md` §15):
+   *  - **"De helft haalt het niet binnen drie jaar."** De mediaan ligt boven de 36 maanden, maar
+   *    verlengingen tellen mee in die tijd en veel mensen kregen er een. De post zegt precies dat.
+   *  - **Hoeveel uur studie A2 of B1 kost.** Geen officiële bron; de post zegt dat hardop.
+   *  - **Een cijfer voor de Wet 2021.** DUO publiceert daarvoor alleen ruwe CSV, geen mediaan.
+   *
+   * De foto is die van de herkansen-post, als plaatshouder tot er een eigen foto is. */
+  {
+    slug: 'hoe-lang-duurt-inburgeren',
+    title: 'Hoe lang duurt inburgeren? De cijfers van DUO',
+    description: 'Hoe lang duurt inburgeren echt? Je krijgt 3 jaar. Volgens cijfers van DUO deed de middelste inburgeraar er 38 tot 44 maanden over. Wat dat voor jou betekent.',
+    category: 'Gids & Informatie',
+    categoryKey: 'gids',
+    categoryColor: 'blue',
+    datePublished: '2026-11-23',
+    dateModified: '2026-11-23',
+    dateLabel: '23 november 2026',
+    breadcrumb: 'Hoe lang duurt inburgeren?',
+    heroTitle: 'Hoe lang duurt inburgeren echt?',
+    heroSubtitle: 'Je krijgt 3 jaar. Maar hoe lang doen mensen er in de praktijk over? DUO telt dat, en bijna niemand kijkt naar die cijfers.',
+    image: '/images/blog/inburgeringsexamen-zakken-herkansen.jpg',
+    imageAlt: 'Persoon leest een brief van DUO over de inburgering aan een keukentafel',
+    readingMinutes: 4,
+    faq: [
+      {
+        q: 'Hoe lang duurt inburgeren?',
+        a: 'Je krijgt 3 jaar de tijd. Hoe lang het echt duurt, verschilt per persoon. DUO heeft cijfers over de Wet inburgering 2013: daar deed de middelste inburgeraar er 38 tot 44 maanden over, gerekend vanaf de brief van DUO. Voor de Wet inburgering 2021 publiceert DUO zo een cijfer nog niet.',
+      },
+      {
+        q: 'Wat gebeurt er als ik het niet binnen 3 jaar haal?',
+        a: 'Dan kijkt DUO of het jouw schuld is. Soms krijg je extra tijd, bijvoorbeeld bij ziekte of een bevalling. Is het wel jouw schuld, dan kun je een boete krijgen. Asielstatushouders krijgen nooit een boete. Vraag extra tijd altijd aan voordat je termijn voorbij is.',
+      },
+      {
+        q: 'Kan ik sneller inburgeren dan 3 jaar?',
+        a: 'Ja. De 3 jaar is de tijd die je maximaal krijgt, geen tijd die je moet volmaken. Je mag een examen doen zodra je er klaar voor bent. Reken wel met de wachttijd op een examenplaats en op je uitslag.',
+      },
+      {
+        q: 'Hoeveel uur moet ik studeren voor het inburgeringsexamen?',
+        a: 'Daar bestaat geen officieel getal voor. DUO noemt geen aantal uren. Getallen die je online leest komen bijna altijd van een taalschool of een cursus. Hoe lang jij nodig hebt, hangt af van je niveau nu en van hoeveel je per week oefent.',
+      },
+      {
+        q: 'Kan ik inburgeren zonder cursus?',
+        a: 'DUO schrijft in zijn cijfers over de Wet inburgering 2013 dat de meeste mensen een cursus volgen, maar dat zelfstudie ook mogelijk is. Onder de Wet inburgering 2021 maak je afspraken met je gemeente. Kijk in je brief of je PIP wat voor jou geldt.',
+      },
+      {
+        q: 'Waar vind ik de cijfers van DUO?',
+        a: 'Op duo.nl, bij de informatie voor gemeenten en scholen. Het rapport heet "Voortgangscijfers Inburgering Wi2013". DUO maakt elke 4 maanden een nieuwe versie. De cijfers in dit artikel hebben als peildatum 1 januari 2026.',
+      },
+    ],
+    articleHtml: `
+<p><strong>Hoe lang duurt inburgeren?</strong> Je krijgt <strong>3 jaar</strong>. Dat staat in de wet. In de praktijk doen veel mensen er iets langer over. Bij de mensen die DUO heeft gevolgd, deed de middelste inburgeraar er <strong>38 tot 44 maanden</strong> over.</p>
+
+<p>Schrik daar niet van. Die cijfers gaan over de oude wet, en veel mensen kregen extra tijd.</p>
+
+<h2 id="cijfers">Wat DUO telt</h2>
+
+<p>DUO rekent vanaf de brief over je inburgeringsplicht, tot de dag dat je alles hebt gehaald. Het geeft de <strong>mediaan</strong>: de persoon precies in het midden. De ene helft was sneller, de andere helft langzamer.</p>
+
+${barChart({
+  title: 'Zo lang deed de middelste inburgeraar erover',
+  sub: 'In maanden, per jaar waarin iemand de brief van DUO kreeg. Wet inburgering 2013.',
+  rows: [['2017', 41], ['2018', 43], ['2019', 44], ['2020', 42], ['2021', 38]],
+  max: 48, unit: 'mnd', ref: 36, refLabel: 'De oranje lijn is de termijn: 3 jaar, dat is 36 maanden.',
+  note: 'Gezinsmigranten waren sneller: 35 tot 42 maanden.',
+})}
+
+${fact('Mediaan van de tijd tussen de kennisgeving en het voldoen aan de inburgeringsplicht, Wet inburgering 2013, peildatum 1 januari 2026. Alle doelgroepen samen: tussen 38 en 44 maanden per jaar. Gezinsmigranten: tussen 35 en 42 maanden. Mensen die nog niet klaar zijn, tellen al mee.', 'DUO — Voortgangscijfers Inburgering Wi2013, tabel 3', SRC_DUO_CIJFERS, CHECKED_NOV)}
+
+<h2 id="niet">Wat deze cijfers niet zeggen</h2>
+
+<div class="tip-card"><div class="tip-number">1</div><div><p><strong>Het is de oude wet.</strong> De cijfers gaan over mensen die voor 2022 moesten inburgeren. Voor de Wet inburgering 2021 heeft DUO dit cijfer nog niet.</p></div></div>
+<div class="tip-card"><div class="tip-number">2</div><div><p><strong>Langer dan 3 jaar is niet hetzelfde als te laat.</strong> Veel mensen kregen extra tijd. Die tijd zit in het cijfer.</p></div></div>
+<div class="tip-card"><div class="tip-number">3</div><div><p><strong>Het zegt niets over hoe moeilijk het examen is.</strong> DUO publiceert geen slagingspercentage per examen.</p></div></div>
+
+<h2 id="hoe-ver">Waar staat de groep van 2021 nu?</h2>
+
+<p>Neem de gezinsmigranten die in 2021 hun brief kregen. Dat is minstens 4 jaar geleden.</p>
+
+${stackedBar({
+  title: 'De meeste mensen halen het',
+  sub: '7.994 gezinsmigranten uit 2021, stand op 1 januari 2026.',
+  parts: [['klaar met inburgeren', 5703], ['ontheffing gekregen', 359], ['plicht vervallen, bijvoorbeeld vertrokken', 771], ['nog bezig', 1161]],
+})}
+
+${fact('Gezinsmigranten die in 2021 inburgeringsplichtig werden onder de Wet inburgering 2013: 7.994 personen. Voldaan 5.703, ontheven 359, vervallen 771, nog inburgeringsplichtig 1.161. "Voldaan" is inclusief een vrijstelling met een ander diploma. Peildatum 1 januari 2026.', 'DUO — Voortgangscijfers Inburgering Wi2013, tabel 1', SRC_DUO_CIJFERS, CHECKED_NOV)}
+
+<p>Ruim 1.100 mensen zijn na 4 jaar nog bezig. Je bent dus niet de enige als het langer duurt.</p>
+
+<h2 id="extra-tijd">Extra tijd is heel gewoon</h2>
+
+<p>Kun je door iets buiten jouw schuld niet leren of examen doen? Dan kun je extra tijd krijgen. Bij DUO heet dat <strong>verlenging</strong>. Bijna 1 op de 3 gezinsmigranten uit 2021 kreeg die.</p>
+
+${fact('Van de 7.994 gezinsmigranten die in 2021 inburgeringsplichtig werden (Wet inburgering 2013), kregen 2.412 een verlenging van de termijn. Redenen die DUO noemt: vertraging rond de start, persoonlijke omstandigheden zoals zwangerschap of ziekte, en bijzondere situaties zoals de coronamaatregelen.', 'DUO — Voortgangscijfers Inburgering Wi2013, tabel 5', SRC_DUO_CIJFERS, CHECKED_NOV)}
+
+${fact('Situaties die extra tijd kunnen geven: eerst leren lezen en schrijven, een opleiding volgen, ziekte, overlijden in de familie, een bevalling, dakloosheid en verblijf in een instelling. "U kunt in een periode maar 1 keer extra tijd krijgen."', 'inburgeren.nl — Extra tijd', SRC_EXTRA_TIJD, CHECKED_NOV)}
+
+<div class="info-box info-box-green">
+  <p>Vraag extra tijd aan <strong>voordat</strong> je termijn voorbij is. Bewaar bewijs, zoals een brief van je dokter. Meer hierover staat in de gids <a href="/nl/inburgering/boete-en-termijn">Boete en termijn</a>.</p>
+</div>
+
+<h2 id="jouw-termijn">Hoeveel tijd heb jij nog?</h2>
+
+<p>Je termijn begint de dag na de datum op je PIP. Vul die datum in, dan zie je hoeveel dagen je nog hebt.</p>
+
+<!--uitleg:herkansen-termijn-->
+
+<h2 id="te-laat">En als je te laat bent?</h2>
+
+<p>Ben je te laat en is het jouw schuld? Dan kun je een boete krijgen. Bij de gezinsmigranten uit 2021 gebeurde dat bij ongeveer 1 op de 6. Na een boete krijg je opnieuw tijd: het examen moet je nog steeds halen.</p>
+
+${fact('Aan gezinsmigranten die in 2021 inburgeringsplichtig werden (Wet inburgering 2013) legde DUO 1.248 boetes op voor het te laat halen van de eerste termijn. De groep was 7.994 personen. Peildatum 1 januari 2026.', 'DUO — Voortgangscijfers Inburgering Wi2013, tabel 4 en tabel 1', SRC_DUO_CIJFERS, CHECKED_NOV)}
+
+${fact('"Asielstatushouders krijgen nooit een boete."', 'inburgeren.nl — Boete', SRC_BOETE, CHECKED_NOV)}
+
+<h2 id="zelf-doen">Zo win je tijd</h2>
+
+<p>Hoeveel uur je moet studeren, kan niemand je eerlijk zeggen: DUO noemt geen getal. Maar de meeste tijd verlies je niet aan studeren. Je verliest die aan wachten.</p>
+
+<ul>
+  <li><span><strong>Plan je eerste examen vroeg.</strong> Elk onderdeel is een apart examen. Je hoeft niet te wachten tot je alles kunt.</span></li>
+  <li><span><strong>Reken met de wachttijd op je uitslag.</strong> Normaal is dat 8 weken. Bij Spreken en Schrijven A2 <a href="/nl/taalexamens/uitslag-spreken-schrijven-a2">duurt het nu langer</a>.</span></li>
+  <li><span><strong>Doe eerst een oefenexamen met een klok.</strong> Dan weet je of je klaar bent voordat je € 50 betaalt.</span></li>
+</ul>
+
+${fact('"De uitslag wordt schriftelijk, binnen 8 weken na het examen, aan de kandidaat kenbaar gemaakt."', 'DUO Examenreglement, artikel 16 lid 3', SRC_REGLEMENT, CHECKED_NOV)}
+
+${fact('Per examenonderdeel € 50 (Lezen, Luisteren, Schrijven, Spreken en KNM). Prijzen kunnen wijzigen.', 'inburgeren.nl — hoeveel kost inburgeren', SRC_BETALEN, CHECKED_NOV)}
+
+<p>Gezakt voor een onderdeel? Lees <a href="/nl/blog/inburgeringsexamen-zakken-herkansen">wat er dan gebeurt</a>. Weet je nog niet welke stappen er zijn? Begin bij <a href="/nl/inburgering/inburgering-stappenplan">het stappenplan</a>.</p>
+`,
+    sidebarHtml: `<b>In het kort</b>
+<ul>
+  <li>Je krijgt 3 jaar de tijd.</li>
+  <li>Oude wet: de middelste inburgeraar deed er 38 tot 44 maanden over.</li>
+  <li>Bijna 1 op de 3 gezinsmigranten kreeg extra tijd.</li>
+  <li>DUO publiceert geen slagingspercentage per examen.</li>
+  <li>Vraag extra tijd aan voordat je termijn voorbij is.</li>
+</ul>`,
+    relatedPosts: [
+      { slug: 'inburgeringsexamen-zakken-herkansen', title: 'Gezakt voor het inburgeringsexamen?', desc: 'Je doet alleen het onderdeel opnieuw dat je niet haalde' },
+      { slug: 'taalniveaus-a1-a2-b1-nederlands', title: 'Taalniveaus A1, A2 en B1', desc: 'Wat je op elk niveau moet kunnen' },
+    ],
+    ctaTitle: 'Weet of je klaar bent voor het examen',
+    ctaDesc: 'Doe een gratis oefenset van tien vragen per onderdeel, met uitleg bij elk antwoord.',
+    ctaHref: '/oefenen',
+    ctaLabel: 'Begin met gratis oefenen',
+  },
+  // ───────────────────────────────────────────────────────────── 7. HOEVEEL FOUTEN MAG JE MAKEN
+  /* Live sinds 23-11-2026: door Amber nagekeken (melding eigenaar, 23-11). De reviewvragen staan in
+   * `seo-agent/briefs/2026-11-23-twee-artikelen.md`.
+   *
+   * Dit is de "honest-gap"-passage uit `SEO/facts.md` §2 als eigen pagina. Elke concurrent noemt
+   * een ruwe slaggrens ("18 van de 25", "19 van de 25", "500 punten"), geen van hen kan hem
+   * bronnen en ze spreken elkaar tegen. DUO publiceert er geen. Dat hardop zeggen is de wig.
+   *
+   * **Dit is een blogpost en geen kennisgids, en dat is geen smaak.** `tests-unit/guides.test.ts`
+   * weigert in een gids elke vermelding van "18 van de 25" of "500 punten" — terecht, want een gids
+   * mag ze nooit *beweren*. Deze post moet ze kunnen *noemen* om ze te weerleggen. Wat hier nooit
+   * mag staan is een van die getallen als feit, of een eigen schatting van de grens.
+   *
+   * Bewust NIET in de tekst, want geen bron: dat de cesuur per examenversie verschilt, dat een
+   * fout antwoord geen strafpunten kost, en hoeveel KNM-vragen het echte examen telt.
+   *
+   * De foto is die van de schrijffouten-post, als plaatshouder tot er een eigen foto is. */
+  {
+    slug: 'hoeveel-fouten-inburgeringsexamen',
+    title: 'Hoeveel fouten mag je maken bij het inburgeringsexamen?',
+    description: 'Hoeveel fouten mag je maken bij het inburgeringsexamen? Online lees je 18 van de 25. DUO noemt geen getal. Wat er wel vaststaat, en hoe je daarmee oefent.',
+    category: 'Gids & Informatie',
+    categoryKey: 'gids',
+    categoryColor: 'blue',
+    datePublished: '2026-11-23',
+    dateModified: '2026-11-23',
+    dateLabel: '23 november 2026',
+    breadcrumb: 'Hoeveel fouten mag je maken?',
+    heroTitle: 'Hoeveel fouten mag je maken bij het inburgeringsexamen?',
+    heroSubtitle: 'Online lees je overal een getal. DUO noemt er geen. Hier staat wat er echt vaststaat, en hoe je oefent zonder dat getal.',
+    image: '/images/blog/veelgemaakte-fouten-schrijven-examen-a2.jpg',
+    imageAlt: 'Een oefenexamen voor het inburgeringsexamen met een pen ernaast',
+    readingMinutes: 4,
+    faq: [
+      {
+        q: 'Hoeveel fouten mag je maken bij het inburgeringsexamen?',
+        a: 'Dat maakt DUO niet bekend. De grens tussen geslaagd en niet geslaagd heet de cesuur. De minister stelt die vast en hij wordt niet gepubliceerd. Wat DUO wel schrijft: niet alle antwoorden hoeven goed te zijn om te slagen.',
+      },
+      {
+        q: 'Klopt het dat je 18 van de 25 vragen goed moet hebben?',
+        a: 'Daar is geen officiële bron voor. Het getal staat op veel websites, maar niet op inburgeren.nl en niet in het examenreglement. Andere websites noemen 19 van de 25. Die getallen spreken elkaar tegen. Gebruik ze dus niet als zekerheid.',
+      },
+      {
+        q: 'Moet je 500 punten halen?',
+        a: 'Ook dat getal staat op veel websites, maar niet op de pagina van DUO over de uitslag. In het examenreglement staat dat je een cijfer krijgt per examen, en dat de grens een cesuur is die de minister vaststelt.',
+      },
+      {
+        q: 'Wat staat er in mijn uitslag?',
+        a: 'In je uitslag staat "geslaagd" of "niet geslaagd". Voor Lezen, Luisteren, Schrijven, Spreken en KNM krijg je ook een cijfer. Er staat niet in welke vragen je fout had.',
+      },
+      {
+        q: 'Kan ik mijn examen bekijken om mijn fouten te zien?',
+        a: 'Nee. In het examenreglement staat dat een gemaakt en beoordeeld examen niet door de kandidaat kan worden ingezien. Daarom is oefenen met uitleg bij elk antwoord zo nuttig: daar zie je je fouten wel.',
+      },
+      {
+        q: 'Hoeveel moet ik dan goed hebben bij het oefenen?',
+        a: 'Een officieel getal is er niet. Een veilige manier is: oefen tot je bij meerdere oefenexamens achter elkaar bijna alles goed hebt, met een klok erbij. Dan ben je niet afhankelijk van een grens die niemand kent.',
+      },
+    ],
+    articleHtml: `
+<p><strong>Hoeveel fouten mag je maken bij het inburgeringsexamen?</strong> Het eerlijke antwoord: <strong>dat maakt DUO niet bekend</strong>. Je hoeft niet alles goed te hebben. Maar een officieel getal bestaat niet. Het getal dat je online leest, "18 van de 25", komt niet van DUO.</p>
+
+<h2 id="wat-duo-zegt">Wat DUO wel zegt</h2>
+
+<p>In het examenreglement, het document met de officiële regels, staan drie dingen.</p>
+
+<div class="tip-card"><div class="tip-number">1</div><div><p><strong>Je hoeft niet alles goed te hebben.</strong> Dat staat er letterlijk.</p></div></div>
+<div class="tip-card"><div class="tip-number">2</div><div><p><strong>Er is een grens: de cesuur.</strong> Dat is de grens tussen geslaagd en niet geslaagd. De minister stelt die vast. Hij wordt niet gepubliceerd.</p></div></div>
+<div class="tip-card"><div class="tip-number">3</div><div><p><strong>Je krijgt een uitslag en een cijfer.</strong> Er staat "geslaagd" of "niet geslaagd", en een cijfer per examen.</p></div></div>
+
+${fact('"Niet alle antwoorden hoeven goed te zijn om te slagen." En: "De zak-slaaggrens wordt uitgedrukt in een cesuur, vastgesteld door de Minister."', 'DUO Examenreglement, pagina 5 en artikel 10 lid 5', SRC_REGLEMENT, CHECKED_NOV)}
+
+${fact('"Deze uitslag wordt uitgedrukt in \'geslaagd\' dan wel \'niet geslaagd\'. Voor de examens Luistervaardigheid, Leesvaardigheid, Schrijfvaardigheid, Spreekvaardigheid en Kennis van de Nederlandse Maatschappij krijgt de kandidaat een cijfer."', 'DUO Examenreglement, artikel 16 lid 1', SRC_REGLEMENT, CHECKED_NOV)}
+
+<h2 id="getallen-online">De getallen die je online leest</h2>
+
+${foutGoed(
+  ['"Je moet 18 van de 25 vragen goed hebben."', '"Je moet 19 van de 25 vragen goed hebben."', '"Je moet 500 punten halen."'],
+  ['Niet alle antwoorden hoeven goed te zijn.', 'De grens is een cesuur die de minister vaststelt.', 'Je krijgt "geslaagd" of "niet geslaagd", en een cijfer.'],
+  ['Staat op internet, zonder bron', 'Staat in het examenreglement'],
+)}
+
+<p>Voor de drie getallen links hebben wij geen officiële bron gevonden. De eerste twee kunnen ook niet allebei kloppen. Misschien ligt de echte grens er dichtbij, misschien niet. Niemand buiten DUO weet het. Daarom noemen wij geen getal.</p>
+
+<!--uitleg:fouten-klopt-->
+
+<h2 id="per-onderdeel">Niet elk examen telt fouten</h2>
+
+<p>Bij <strong>Lezen en Luisteren</strong> kijkt de computer na. Een antwoord is goed of fout. Bij <strong>Schrijven en Spreken</strong> leest of luistert een beoordelaar mee. Een foutje in je zin is daar niet hetzelfde als een fout antwoord. Een getal als "18 van de 25" past bij die twee examens dus helemaal niet.</p>
+
+<!--uitleg:fouten-opbouw-->
+
+${fact('Lezen A2: 25 vragen. Luisteren A2: 25 vragen. Schrijven A2: 4 opdrachten. Spreken A2: 16 vragen. De aantallen staan op het startscherm van de officiële oefenexamens van DUO; DUO noemt ze niet op zijn informatiepagina.', 'inburgeren.nl — Oefenen', SRC_OEFENEN, CHECKED_NOV)}
+
+${fact('Lezen en Luisteren worden geautomatiseerd beoordeeld. Schrijfvaardigheid wordt beoordeeld door gecertificeerde beoordelaars. Spreekvaardigheid wordt gedeeltelijk geautomatiseerd en gedeeltelijk door gecertificeerde beoordelaars beoordeeld.', 'DUO Examenreglement, artikel 10', SRC_REGLEMENT, CHECKED_NOV)}
+
+<h2 id="niet-inzien">Je kunt je fouten later niet opvragen</h2>
+
+<p>Je uitslag komt per brief. Je ziet niet welke vragen je fout had, en je kunt je examen ook niet opvragen. Wil je weten wat je fout doet? Dan moet je dat vóór het examen ontdekken, met oefenen waarbij je uitleg krijgt bij elk antwoord.</p>
+
+${fact('"Het afgelegde en beoordeelde examen kan niet worden ingezien door de kandidaat."', 'DUO Examenreglement, artikel 14 lid 3', SRC_REGLEMENT, CHECKED_NOV)}
+
+<h2 id="oefenen">Zo oefen je zonder dat getal</h2>
+
+<ul>
+  <li><span><strong>Oefen tot het makkelijk gaat.</strong> Heb je bij meerdere oefenexamens achter elkaar bijna alles goed? Dan zit je ruim boven elke grens die genoemd wordt.</span></li>
+  <li><span><strong>Zet een klok aan.</strong> Bij Lezen heb je 65 minuten voor 25 vragen. Veel fouten komen door haast aan het eind.</span></li>
+  <li><span><strong>Kijk naar je fouten, niet alleen naar je score.</strong> Welke soort vraag gaat steeds mis? Daar zit je winst.</span></li>
+</ul>
+
+${fact('"Het examen Lezen op niveau A2 doet u op de computer. U moet teksten lezen. U moet ook vragen beantwoorden. Het examen duurt 65 minuten."', 'inburgeren.nl — Inhoud taalexamens', SRC_INHOUD, CHECKED_NOV)}
+
+<p>Al een keer gezakt? Kies bij <a href="/nl/herexamen">herexamen</a> het onderdeel dat je opnieuw moet doen. Wil je eerst zien hoe de vragen eruitzien? Bekijk de <a href="/nl/voorbeeldvragen">voorbeeldvragen</a>.</p>
+`,
+    sidebarHtml: `<b>In het kort</b>
+<ul>
+  <li>DUO maakt de slaggrens niet bekend.</li>
+  <li>Niet alle antwoorden hoeven goed te zijn.</li>
+  <li>"18 van de 25" en "500 punten" hebben geen officiële bron.</li>
+  <li>Je krijgt "geslaagd" of "niet geslaagd", en een cijfer.</li>
+  <li>Je kunt je examen later niet inzien.</li>
+</ul>`,
+    relatedPosts: [
+      { slug: 'inburgeringsexamen-zakken-herkansen', title: 'Gezakt voor het inburgeringsexamen?', desc: 'Je doet alleen het onderdeel opnieuw dat je niet haalde' },
+      { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'De 8 fouten bij Schrijven A2', desc: 'Hoofdletters, komma’s, tijden en ‘u’ of ‘je’' },
+    ],
+    ctaTitle: 'Zie je fouten voordat het examen ze telt',
+    ctaDesc: 'Doe een gratis oefenset van tien vragen per onderdeel. Je krijgt uitleg bij elk antwoord.',
+    ctaHref: '/oefenen',
+    ctaLabel: 'Begin met gratis oefenen',
+  },
 ];
 
 export function getPostLocale(post: BlogPost, locale: string): ResolvedPost {
@@ -2495,9 +2832,18 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
   return POSTS.find(p => p.slug === nlSlug);
 }
 
-/** Newest first — the order the index grid renders in. */
+/** Live = door de docent nagekeken. Een concept bestaat alleen op zijn eigen URL. */
+export function isPublished(post: BlogPost): boolean {
+  return post.status !== 'concept';
+}
+
+/**
+ * Newest first — the order the index grid renders in. **Alleen gepubliceerde posts**: het
+ * blogoverzicht, `/gidsen`, de sitemap en `llms.txt` lezen allemaal deze functie, dus een concept
+ * kan nergens anders opduiken dan op zijn eigen URL.
+ */
 export function getSortedPosts(): BlogPost[] {
-  return [...POSTS].sort((a, b) => b.datePublished.localeCompare(a.datePublished));
+  return POSTS.filter(isPublished).sort((a, b) => b.datePublished.localeCompare(a.datePublished));
 }
 
 export default POSTS;

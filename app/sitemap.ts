@@ -88,12 +88,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
-  /* Landingspagina "herexamen" (live 16-11, nagekeken door Amber). Alleen Nederlands: de EN- en
-     AR-versie zijn `noindex` (`robots` in de pagina zelf), en die twee gaan samen. */
-  entries.push({ url: absUrl('nl', 'herexamen'), changeFrequency: 'monthly', priority: 0.8 });
-  /* Landingspagina "voorbeeldvragen" (live 16-11, nagekeken door Amber; besluit eigenaar om niet tot
-     week 48 te wachten). Ook alleen Nederlands, om dezelfde reden. */
-  entries.push({ url: absUrl('nl', 'voorbeeldvragen'), changeFrequency: 'monthly', priority: 0.8 });
+  /* De landingspagina's "herexamen" en "voorbeeldvragen" (live 16-11, nagekeken door Amber).
+     Nederlands en, sinds 23-11, Engels; Arabisch is nog `noindex`. Deze lijst moet gelijk zijn aan
+     `INDEXED_LOCALES` in de twee pagina's zelf — nooit een URL adverteren die zichzelf noindex noemt. */
+  for (const locale of ['nl', 'en'] as const) {
+    entries.push({ url: absUrl(locale, 'herexamen'), changeFrequency: 'monthly', priority: 0.8 });
+    entries.push({ url: absUrl(locale, 'voorbeeldvragen'), changeFrequency: 'monthly', priority: 0.8 });
+  }
 
   /* One overview page per (level, onderdeel).
    *

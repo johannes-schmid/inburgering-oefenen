@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { ArrowRight, BadgeCheck, Globe } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Globe, FileClock } from 'lucide-react';
 import Field from '@/components/glas/Field';
 import { glasButton } from '@/components/glas/Button';
 import Crumbs from '../../_components/glas/Crumbs';
 import FaqList from '../../_components/glas/FaqList';
 import { Link } from '@/i18n/navigation';
-import { getPostBySlug, getPostLocale, getPostSlug, getAllPostParams, hasTranslation } from '@/data/blog-posts';
+import { getPostBySlug, getPostLocale, getPostSlug, getAllPostParams, hasTranslation, isPublished } from '@/data/blog-posts';
 import ArticleContent from '@/components/ArticleContent';
 import BlogUitleg from './BlogUitleg';
 import GuideToc from '@/components/guides/GuideToc';
@@ -58,7 +58,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: lp.heroTitle,
     description: lp.description,
     // A locale with no translated body would otherwise be a thin duplicate of the Dutch post.
-    robots: translated ? { index: true, follow: true } : { index: false, follow: true },
+    // Een concept (nog niet nagekeken door de docent) is in elke taal noindex.
+    robots: translated && isPublished(post) ? { index: true, follow: true } : { index: false, follow: true },
     alternates: {
       canonical: canonicalUrl,
       languages: {
@@ -100,6 +101,7 @@ export default async function BlogPostPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'blog' });
   const lp = getPostLocale(post, locale);
   const translated = hasTranslation(post, locale);
+  const published = isPublished(post);
   const canonicalUrl = absUrl(locale, `blog/${getPostSlug(post, locale)}`);
   const sections = guideSections(lp.articleHtml);
 
@@ -153,7 +155,11 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {/* Geen structured data op een concept: BlogPosting noemt de docent als auteur, en dat klopt
+          pas als zij de tekst heeft nagekeken. */}
+      {published && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      )}
 
       {/* De kop is die van een kennisgids (GuideArticle.tsx, glas.html §14 "Artikel"): Nevel onder
           de pil door, titel, lead en auteur links op het veld, de foto van het artikel rechts als
@@ -185,6 +191,14 @@ export default async function BlogPostPage({ params }: Props) {
               {/* Melding vóór de eerste regel tekst (AI-verordening art. 50 lid 4 en 5): een
                   machinevertaling zonder menselijke controle valt niet onder de uitzondering voor
                   nagekeken tekst. Staat bovenaan, nooit onderaan weggestopt. */}
+              {/* Een concept zegt dat bovenaan, vóór de eerste regel tekst: wie de URL kent mag
+                  niet denken dat de docent dit al heeft nagekeken. */}
+              {!published && (
+                <p className="g-notice g-notice-glas m-0 mt-6 max-w-[640px]" role="note">
+                  <FileClock aria-hidden="true" />
+                  <span>{t('draft_notice')}</span>
+                </p>
+              )}
               {translated && locale !== 'nl' && (
                 <p className="g-notice g-notice-glas m-0 mt-6 max-w-[640px]" role="note">
                   <Globe aria-hidden="true" />
@@ -248,10 +262,12 @@ export default async function BlogPostPage({ params }: Props) {
             )}
 
             {/* De nagekeken-door-regel — de USP, gewoon en controleerbaar opgeschreven. */}
-            <p className="g-notice m-0 mt-10" role="note">
-              <BadgeCheck aria-hidden="true" />
-              <span>{t('reviewed_by', { date: post.dateModified })}</span>
-            </p>
+            {published && (
+              <p className="g-notice m-0 mt-10" role="note">
+                <BadgeCheck aria-hidden="true" />
+                <span>{t('reviewed_by', { date: post.dateModified })}</span>
+              </p>
+            )}
 
             {/* De slot-CTA: Nacht stil met een witte knop. Eén donker blok op de pagina. */}
             <Field variant="nacht-stil" className="g-inline-cta !mt-10">

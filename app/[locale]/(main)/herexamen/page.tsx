@@ -26,6 +26,15 @@ import { SPREKEN_ITEM, demoFormats, lezenDemo, luisterenDemo } from '../_compone
  * beschrijft het per examen. */
 const REVIEWED = true;
 
+/**
+ * De talen die Google mag indexeren. Nederlands is door Amber nagekeken (16-11); Engels is op
+ * 23-11-2026 opengezet op besluit van de eigenaar, die de Engelse tekst zelf heeft gelezen — de
+ * opgaven op de pagina blijven Nederlands. Arabisch blijft `noindex` tot iemand die het vloeiend
+ * leest de tekst heeft gecontroleerd. `app/sitemap.ts` hanteert dezelfde lijst: zet een taal op
+ * beide plekken tegelijk aan, anders adverteert de sitemap een URL die zichzelf noindex noemt.
+ */
+const INDEXED_LOCALES = ['nl', 'en'];
+
 const DUO_BETALEN = 'https://www.inburgeren.nl/inburgeren-betalen/index.jsp';
 const DUO_VERLENGING = 'https://www.inburgeren.nl/nieuwsberichten/artikel.jsp?cid=tcm:94-243309-16';
 
@@ -49,8 +58,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: t('meta_title'),
     description: t('meta_description'),
-    robots: { index: REVIEWED && locale === 'nl', follow: true },
-    alternates: alternatesFor(locale, 'herexamen', ['nl']),
+    robots: { index: REVIEWED && INDEXED_LOCALES.includes(locale), follow: true },
+    alternates: alternatesFor(locale, 'herexamen', INDEXED_LOCALES),
     openGraph: {
       images: ogImageFor(locale),
       title: t('meta_title'),

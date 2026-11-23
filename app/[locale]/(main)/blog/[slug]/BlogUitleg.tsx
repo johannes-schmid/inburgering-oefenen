@@ -427,6 +427,40 @@ function element(id: string, loc: Loc) {
       return <Beslispad {...c} start="q1" labels={L.beslis[loc]} />;
     }
 
+    /* De twee uitlegelementen van `hoeveel-fouten-inburgeringsexamen` (23-11-2026). Die post heeft
+     * nog geen Engelse of Arabische tekst, en een onvertaalde taal rendert de Nederlandse post met
+     * `locale="nl"` — daarom staat hier alleen Nederlands. Komt de vertaling, dan komen `en` en `ar`
+     * hier in dezelfde commit bij, net als bij de andere elementen. */
+    case 'fouten-klopt': {
+      const beweringen = [
+        { id: 'f1', tekst: 'DUO zegt: je moet 18 van de 25 vragen goed hebben.', klopt: false, uitleg: 'DUO noemt geen getal. De grens is een cesuur die de minister vaststelt, en die wordt niet gepubliceerd.', bron: 'Examenreglement, art. 10 lid 5' },
+        { id: 'f2', tekst: 'Je hoeft niet alles goed te hebben om te slagen.', klopt: true, uitleg: 'Dat staat letterlijk in het examenreglement: "Niet alle antwoorden hoeven goed te zijn om te slagen."', bron: 'Examenreglement, pagina 5' },
+        { id: 'f3', tekst: 'Na het examen kun je zien welke vragen je fout had.', klopt: false, uitleg: 'Je krijgt "geslaagd" of "niet geslaagd" en een cijfer. Je examen kun je niet inzien.', bron: 'Examenreglement, art. 14 lid 3' },
+        { id: 'f4', tekst: 'Bij Schrijven kijkt een mens je antwoord na.', klopt: true, uitleg: 'Schrijven wordt beoordeeld door gecertificeerde beoordelaars. Lezen en Luisteren kijkt de computer na.', bron: 'Examenreglement, art. 10' },
+      ];
+      return (
+        <KloptHet
+          title="Klopt het?"
+          intro="Vier dingen die je vaak hoort over de uitslag. Kies, en zie meteen wat DUO zegt."
+          labels={L.klopt.nl}
+          beweringen={beweringen}
+        />
+      );
+    }
+
+    case 'fouten-opbouw': {
+      return (
+        <ExamenOpbouw
+          title="De vier taalexamens op A2"
+          intro="Kies een onderdeel. De lengte van de balk is de tijd, elk blokje is een vraag of opdracht."
+          locale="nl"
+          labels={L.opbouw.nl}
+          onderdelen={(['lezen', 'luisteren', 'schrijven', 'spreken'] as SkillSlug[]).map(s => onderdeel('nl', s, ['a2']))}
+          bron={[{ label: 'inburgeren.nl', href: SRC_INHOUD }, { label: 'oefenexamens van DUO', href: SRC_OEFENEN }]}
+        />
+      );
+    }
+
     default:
       return null;
   }

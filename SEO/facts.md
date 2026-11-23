@@ -491,3 +491,79 @@ Alle citaten letterlijk, pagina's opgehaald 03-11-2026.
   bevatten elk 4 opdrachten en **geen voorbeeldantwoord en geen beoordelingsschema** (alle drie
   doorzocht 03-11-2026). Reddit beweert dat DUO een "officiële rubric" voor Schrijven publiceert:
   niet gevonden.
+
+## 15. DUO-voortgangscijfers Wet inburgering 2013 — VERIFIED 2026-11-23
+
+Bron: **DUO, "Voortgangscijfers Inburgering Wi2013 — Totaal Nederland", peildatum 1 januari 2026**,
+https://duo.nl/data/Totaal%20Nederland.pdf, gelinkt vanaf
+https://duo.nl/zakelijk/inburgering-ketenpartners/cijfers-over-inburgeren/cijfers-inburgeren.jsp
+(*"Deze voortgangscijfers worden elke 4 maanden ververst."*). Geraadpleegd 23-11-2026. Geverifieerd
+voor `hoe-lang-duurt-inburgeren` in `data/blog-posts.ts`.
+
+**Drie voorwaarden bij elk cijfer hieronder — zonder die voorwaarde niet publiceren:**
+1. Het gaat om de **Wet inburgering 2013** (wie vóór 2022 inburgeringsplichtig werd). Voor de Wet
+   2021 publiceert DUO alleen open data in CSV, *"geen publicatie met tabellen in pdf-formaat"*
+   (https://duo.nl/zakelijk/inburgering-ketenpartners/wet-inburgering-2021/cijfers-over-de-wi2021.jsp).
+   Schrijf dus nooit "inburgeren duurt nu X maanden".
+2. Het cijfer hoort bij een **cohort** (het jaar waarin iemand de kennisgeving kreeg) en een
+   **peildatum**; DUO ververst het elke vier maanden. Noem beide.
+3. Het zijn **geen slagingspercentages per examen**. Die publiceert DUO niet (gezocht 23-11-2026 op
+   duo.nl en inburgeren.nl). Een commerciële aanbieder noemt "85%" en elders "82%" voor zichzelf:
+   niet overnemen.
+
+### Tabel 3 — mediaan inburgeringstijd in maanden
+DUO: *"de mediaan … van het aantal maanden dat het duurde voor een inburgeraar om aan de
+inburgeringsplicht te voldoen als er geen bijzondere vertragende omstandigheden meespeelden"*,
+gemeten van de kennisgeving tot het halen van alle onderdelen. *"Inburgeringsplichtige die nog niet
+alle examenonderdelen hebben behaald zijn al wel opgenomen in de rangschikking."*
+
+| Cohort | 2013 | 2014 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020 | 2021 |
+|---|---|---|---|---|---|---|---|---|---|
+| Alle doelgroepen | 39 | 39 | 40 | 38 | 41 | 43 | 44 | 42 | 38 |
+| Gezinsmigrant | 36 | 35 | 38 | 35 | 35 | 40 | 42 | 40 | 35 |
+| Asielstatushouder | 43 | 40 | 40 | 39 | 42 | 44 | 44 | 43 | 39 |
+
+- Publiceerbaar: *"de mediaan lag per cohort tussen 38 en 44 maanden; bij gezinsmigranten tussen 35
+  en 42"*. De termijn is 3 jaar = 36 maanden — de vergelijking mag, de conclusie "de helft haalt het
+  niet op tijd" **niet**: verlengingen tellen mee in de tijd, en veel mensen kregen er een (tabel 5).
+- ❌ De kolom ">=2022" niet gebruiken: dat zijn laatkomers onder de oude wet, geen cohort.
+
+### Tabel 1 — uitkomst cohort 2021, gezinsmigranten (7.994 personen)
+Voldaan **5.703** · ontheven **359** · vervallen **771** · nog inburgeringsplichtig **1.161**.
+"Voldaan" is inclusief vrijstelling op basis van een ander diploma. "Vervallen" = genaturaliseerd,
+vertrokken, verblijfsdoel gewijzigd of overleden vóórdat aan de plicht was voldaan.
+Asielstatushouders cohort 2021 (17.467): voldaan 10.204 · ontheven 4.665 · vervallen 518 · nog
+inburgeringsplichtig 2.080.
+
+### Tabel 2 — op welk niveau (cohort 2021)
+Gezinsmigranten: A2 **5.401** · B1 **155** · B2 **143**. Asielstatushouders: A2 **8.865** · B1
+**629** · B2 **694**. B1 en B2 tellen alleen als alle vier de taalvaardigheden op dat niveau zijn
+gehaald (voetnoot 4). Onder de Wet 2013 was A2 het vereiste niveau; onder de Wet 2021 is de
+B1-route de norm (§10) — schrijf dit dus als geschiedenis, niet als kans voor de lezer van nu.
+
+### Tabel 4 — boetes eerste termijn (definitief opgelegd), totaal per cohort
+2013 **1.368** · 2014 **1.396** · 2015 **1.786** · 2016 **2.138** · 2017 **1.099** · 2018 **1.420** ·
+2019 **1.621** · 2020 **1.062** · 2021 **1.532**. Cohort 2021 uitgesplitst: gezinsmigrant 1.248,
+asielstatushouder 138, overig 146. ⚠️ Altijd samen met §11: asielstatushouders krijgen sinds de
+uitspraak van de Raad van State van 9 juli 2025 **geen boete meer**; deze aantallen zijn van daarvoor.
+DUO over niet-verwijtbaar (Wi2013): *"minstens 300 uur les … bij een opleiding met Blik op
+Werk-keurmerk en twee examenpogingen voor alle nog niet behaalde examenonderdelen"* → geen boete en
+twee jaar verlenging. Voetnoot 6: *"Vier examenpogingen en 600 uur les kunnen leiden tot ontheffing
+van de inburgeringsplicht."* Beide regels zijn Wi2013.
+
+### Tabel 5 — verlengingen (unieke personen), cohort 2021
+Gezinsmigranten **2.412** van de 7.994; asielstatushouders **13.756** van de 17.467. Redenen bij
+gezinsmigranten: vertraging rondom start 677, persoonlijke omstandigheden 1.041, bijzondere
+situaties 1.213 (een persoon kan in meer dan één categorie vallen). DUO noemt als voorbeelden
+zwangerschap, ziekte, alfabetiseren en de coronamaatregelen van 2020.
+
+### Zelfstudie
+Inleiding van het rapport, letterlijk: *"De meeste inburgeringsplichtigen volgen hiervoor een
+cursus, maar zelfstudie is ook mogelijk. Een inburgeringsplichtige bepaalt zelf welk type onderwijs
+het beste bij hem of haar past."* Dit is een zin over de Wi2013; voor de Wet 2021 geldt §10 en §11.
+
+### ❌ Niet gevonden, dus niet publiceren
+- Hoeveel uur studie A2 of B1 kost. Geen officiële bron; getallen als "7–10 uur per week, zes
+  maanden" komen uit advertorials.
+- Een slagingspercentage per examenonderdeel of per poging.
+- Mediane inburgeringstijd onder de Wet 2021.
