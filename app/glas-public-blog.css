@@ -78,6 +78,30 @@
   .g-tone-3 { background: repeating-linear-gradient(135deg, #b9c4d9 0 4px, #dfe5f0 4px 8px); }
   .g-tone-4 { background: var(--oranje); }
 
+  /* Een beoordelingsmodel (`rubric()`): per aspect een rij met bolletjes — één per punt — en de
+     omschrijving van de hoogste score. Het eerste aspect krijgt het ene oranje accent: daar hangt
+     de rest van af. Het aantal punten staat er ook als tekst. */
+  .g-rub { display: grid; gap: 8px; }
+  .g-rub-row { background: #fff; border-radius: var(--r-sm); padding: 12px 14px; }
+  .g-rub-head { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 9px; }
+  .g-rub-name { font-family: var(--font-headline); font-weight: 700; color: var(--navy); font-size: 1rem; }
+  .g-rub-pips { display: inline-flex; gap: 4px; }
+  .g-rub-pips i { width: 10px; height: 10px; border-radius: 50%; background: var(--navy); display: block; }
+  .g-rub-row.is-first .g-rub-pips i { background: var(--oranje); }
+  .g-rub-max { margin-inline-start: auto; font-size: 0.8rem; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .g-rub-top { margin: 5px 0 0 !important; font-size: 0.94rem !important; line-height: 1.5 !important; color: var(--ink) !important; }
+
+  /* Een voorbeeldantwoord met genummerde markeringen (`annotated()`). De markering is een tint met
+     het nummer erachter; kleur is niet de enige drager, het nummer staat in de tekst én in de lijst. */
+  .g-anno-text { background: #fff; border-radius: var(--r-sm); padding: 16px 18px; font-size: 1rem; line-height: 1.75; color: var(--ink); }
+  .g-anno-text mark { background: rgba(254, 118, 44, 0.18); color: inherit; border-radius: 4px; padding: 1px 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+  .g-anno-text mark::after { content: attr(data-n); font-family: var(--font-headline); font-weight: 800; font-size: 0.68em; color: #a24000; vertical-align: super; margin-inline-start: 2px; }
+  .g-anno-notes { list-style: none !important; margin: 14px 0 0 !important; padding: 0 !important; display: grid !important; gap: 9px !important; counter-reset: none; }
+  .g-anno-notes li { display: flex !important; align-items: flex-start; gap: 10px !important; font-size: 0.95rem !important; line-height: 1.55 !important; color: var(--ink) !important; }
+  .g-anno-notes li::before { content: none !important; }
+  .g-anno-n { width: 22px; height: 22px; border-radius: 50%; background: rgba(254, 118, 44, 0.18); color: #a24000; font-family: var(--font-headline); font-weight: 800; font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transform: translateY(1px); }
+  .g-anno-notes b { font-family: var(--font-headline); color: var(--navy); }
+
   /* ---------- oefenvragen ---------- */
   .g-blog-card { background: #fff; border-radius: var(--r-lg); padding: 22px; }
   .g-topic {

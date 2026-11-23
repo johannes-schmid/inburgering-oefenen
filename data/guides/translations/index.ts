@@ -77,6 +77,7 @@ import staatsinrichtingEnRechtsstaatAr from './staatsinrichting-en-rechtsstaat.a
 import staatsinrichtingEnRechtsstaatEn from './staatsinrichting-en-rechtsstaat.en';
 import taalexamensA2B1Ar from './taalexamens-a2-b1.ar';
 import taalexamensA2B1En from './taalexamens-a2-b1.en';
+import taaleisNaturalisatieEn from './taaleis-naturalisatie.en';
 import vrijstellingEnOntheffingAr from './vrijstelling-en-ontheffing.ar';
 import vrijstellingEnOntheffingEn from './vrijstelling-en-ontheffing.en';
 import werkEnInkomenAr from './werk-en-inkomen.ar';
@@ -102,6 +103,8 @@ export const TRANSLATIONS: Record<string, Partial<Record<'en' | 'ar', GuideLocal
   'spreken-examen': { en: sprekenExamenEn, ar: sprekenExamenAr },
   'staatsinrichting-en-rechtsstaat': { en: staatsinrichtingEnRechtsstaatEn, ar: staatsinrichtingEnRechtsstaatAr },
   'taalexamens-a2-b1': { en: taalexamensA2B1En, ar: taalexamensA2B1Ar },
+  /* Alleen Engels (23-11-2026, met de hand vertaald): de Arabische pagina blijft `noindex`. */
+  'taaleis-naturalisatie': { en: taaleisNaturalisatieEn },
   'vrijstelling-en-ontheffing': { en: vrijstellingEnOntheffingEn, ar: vrijstellingEnOntheffingAr },
   'werk-en-inkomen': { en: werkEnInkomenEn, ar: werkEnInkomenAr },
   'wonen': { en: wonenEn, ar: wonenAr },

@@ -491,6 +491,7 @@ Alle citaten letterlijk, pagina's opgehaald 03-11-2026.
   bevatten elk 4 opdrachten en **geen voorbeeldantwoord en geen beoordelingsschema** (alle drie
   doorzocht 03-11-2026). Reddit beweert dat DUO een "officiële rubric" voor Schrijven publiceert:
   niet gevonden.
+  **Gecorrigeerd 23-11-2026:** die rubric bestaat wél, op duo.nl/zakelijk — zie §16.
 
 ## 15. DUO-voortgangscijfers Wet inburgering 2013 — VERIFIED 2026-11-23
 
@@ -567,3 +568,55 @@ het beste bij hem of haar past."* Dit is een zin over de Wi2013; voor de Wet 202
   maanden" komen uit advertorials.
 - Een slagingspercentage per examenonderdeel of per poging.
 - Mediane inburgeringstijd onder de Wet 2021.
+
+## 16. Beoordelingsmodellen Schrijven A2 en Spreken A2 — VERIFIED 2026-11-23
+
+DUO publiceert de beoordelingsmodellen wél, op de pagina voor ketenpartners en niet op inburgeren.nl:
+https://duo.nl/zakelijk/inburgering-ketenpartners/examens/inburgeringsexamen/beoordelingsmodellen-en-eindtermen.jsp
+Drie pdf's van elk één pagina, geraadpleegd 23-11-2026. **Dit vervangt de regel "DUO publiceert geen
+rubric voor Schrijven" uit §14** (die ging over de oefenexamens op inburgeren.nl, en dat klopt nog:
+dáár staat hij niet). Geverifieerd voor `hoe-wordt-schrijven-spreken-nagekeken` in `data/blog-posts.ts`.
+
+### Schrijven A2 — vrij schrijven en correspondentie
+https://duo.nl/zakelijk/images/beoordelingsmodel-vrij-schrijven-en-correspondentie.pdf
+
+| Aspect | Punten | Hoogste score, letterlijk |
+|---|---|---|
+| Adequaatheid/begrijpelijkheid | 0–3 | 3: *"De tekst is een uitstekende uitwerking van de opdracht."* · 2: *"De tekst is acceptabel en herkenbaar als uitwerking van de opdracht."* · 1: *"een voorstelbaar, maar geen voor de hand liggend antwoord op de vraag en/of het antwoord is onvolledig of niet helemaal duidelijk"* · 0: niet leesbaar, niet herkenbaar of geen uitwerking |
+| Grammatica | 0–2 | 2: *"De tekst bevat nauwelijks of geen grammaticale fouten."* · 1: *"redelijk wat"* · 0: *"veel"* |
+| Spelling | 0–2 | 2: *"De spelling is vrijwel correct. Eventuele spelfouten tasten de begrijpelijkheid niet aan."* |
+| Woordgebruik | 0–2 | 2: *"Het woordgebruik is gevarieerd en sluit aan bij de opdracht."* · 0: *"vrijwel alleen woorden uit de opdracht"* |
+| Coherentie | 0–1 | 1: *"enige samenhang … al dan niet bewerkstelligd door gebruik van eenvoudige voegwoorden (zoals en, maar, want en omdat) en/of verwijswoorden (zoals hij, zij, die of dat)"* |
+
+**De hoofdregel, letterlijk:** *"Indien adequaatheid 0 punten krijgt, worden de overige
+beoordeelaspecten met een 0 beoordeeld."* En: *"Hier wordt per opdracht een opdrachtspecifieke
+beoordeling aan toegevoegd"* — wat "acceptabel" is, verschilt dus per opdracht en staat niet in het model.
+
+### Schrijven A2 — formulier
+https://duo.nl/zakelijk/images/beoordelingsmodel-schrijven-a2-formulieren.pdf
+Drie aspecten: Adequaatheid/begrijpelijkheid 0–3, Spelling 0–2 (1 punt: *"Persoonlijke gegevens zijn
+correct gespeld."*), Woordgebruik 0–2. **Geen Grammatica en geen Coherentie bij een formulier.**
+
+### Spreken A2 — "Versie: 10-08-2026"
+https://duo.nl/zakelijk/images/beoordelingsmodel-spreekvaardigheid.pdf
+
+| Aspect | Punten | Hoogste score, letterlijk |
+|---|---|---|
+| Adequaatheid/begrijpelijkheid | 0–3 | 3: *"De uiting is helder en een uitstekend antwoord op de vraag."* · 2: *"begrijpelijk en een adequaat antwoord"* · 0: *"De uiting ontbreekt, is niet verstaanbaar of is geen antwoord op de vraag."* |
+| Woordgebruik | 0–2 | 2: *"gevarieerd en de meeste woorden zijn goed gebruikt"* · 1: *"eenvoudig, bevat eigen woorden"* · 0: *"beperkt zich tot woorden uit de opdracht"* |
+| Grammatica | 0–2 | 2: *"nauwelijks of geen grammaticale fouten"* · 1: *"redelijk wat"* · 0: *"veel"* |
+| Vloeiendheid | 0–2 | 2: *"De uiting is vloeiend. Pauzes en/of herformuleringen komen nog voor bij langere uitingen."* |
+| Coherentie | 0–1 | 1: *"enige samenhang"*, met dezelfde voegwoorden en verwijswoorden als bij Schrijven |
+| Uitspraak | 0–2 | 2: *"goed verstaanbaar, ook voor een ongeoefende luisteraar, ondanks een accent of af en toe een verkeerd uitgesproken woord"* |
+
+Zelfde hoofdregel: adequaatheid 0 → alle andere aspecten 0.
+
+### ❌ Niet in de modellen, dus niet publiceren
+- **Hoeveel punten je nodig hebt.** De modellen geven punten per aspect; hoe die een cijfer worden
+  en waar de cesuur ligt staat er niet (§2 blijft gelden). Tel de maxima dus niet op tot "10 punten
+  per opdracht" als een norm.
+- Welke aspecten bij welke spreekvraag tellen (het model zegt alleen dat pauzes "bij langere
+  uitingen" nog voorkomen).
+- Een puntenaftrek voor aanhef, groet of register. Dat valt hooguit onder de opdrachtspecifieke
+  beoordeling, en die is niet openbaar.
+- Een beoordelingsmodel voor B1: Schrijven en Spreken B1 zijn staatsexamen NT2 (§13), een ander stelsel.

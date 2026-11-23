@@ -1,0 +1,72 @@
+/* ---------- FAQ-hub (`/veelgestelde-vragen`) ----------
+   Bouwt op de landingspagina's (.g-rx-*, .g-hb-*) en op de bestaande FAQ-kaart (.g-faq), de chips
+   (.g-chip) en het invoerveld (.g-input). Alleen wat die niet hebben staat hier. */
+@layer components {
+  .g-faq-hero.g-rx-hero { padding-bottom: 48px; }
+  @media (min-width: 860px) { .g-faq-hero.g-rx-hero { padding-bottom: 64px; } }
+  .g-faq-hero .g-crumb { margin-bottom: 24px; }
+  .g-faq-hero .g-rx-head { margin-bottom: 0; }
+  .g-faq-hero .g-rx-h1 { font-size: clamp(34px, 4.6vw, 56px); max-width: 18ch; }
+  .g-faq-hero .g-notice { max-width: 640px; }
+
+  .g-faq-hub { padding-block: 40px 72px; }
+  @media (min-width: 860px) { .g-faq-hub { padding-block: 56px 112px; } }
+
+  /* ---------- zoeken en onderwerpen ---------- */
+  .g-faq-filter { display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px; }
+  @media (min-width: 860px) { .g-faq-filter { margin-bottom: 56px; } }
+  .g-faq-search { position: relative; max-width: 560px; }
+  .g-faq-search > svg { position: absolute; inset-inline-start: 16px; top: 50%; width: 18px; height: 18px; margin-top: -9px; color: var(--ink-2); pointer-events: none; }
+  .g-faq-search .g-input { background: #fff; padding-inline: 46px 46px; }
+  .g-faq-search .g-input:hover { background: #fff; box-shadow: inset 0 0 0 2px rgba(0, 43, 109, 0.14); }
+  .g-faq-search .g-input:focus, .g-faq-search .g-input:focus-visible { box-shadow: inset 0 0 0 2px var(--navy); }
+  .g-faq-search .g-input::-webkit-search-cancel-button { display: none; }
+  .g-faq-clear {
+    all: unset; box-sizing: border-box; cursor: pointer; position: absolute; inset-inline-end: 7px; top: 50%; width: 36px; height: 36px; margin-top: -18px;
+    display: flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--ink-2);
+    transition: background-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out-glas);
+  }
+  .g-faq-clear svg { width: 16px; height: 16px; }
+  .g-faq-clear:hover { background: var(--mist); color: var(--navy); }
+  .g-faq-clear:active { transform: scale(0.92); }
+  .g-faq-clear:focus-visible { box-shadow: inset 0 0 0 2px var(--navy); }
+  .g-faq-filter .g-chip { background: #fff; }
+  .g-faq-filter .g-chip:hover { background: #fff; box-shadow: inset 0 0 0 2px rgba(0, 43, 109, 0.14); }
+  .g-faq-filter .g-chip[aria-pressed="true"] { background: var(--navy); color: #fff; box-shadow: none; }
+  .g-faq-filter .g-chip[aria-pressed="true"] .g-chip-cnt { color: rgba(255, 255, 255, 0.72); }
+  .g-faq-count { margin: 0; font-size: 13.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+  /* ---------- de groepen ---------- */
+  .g-faq-groups { display: flex; flex-direction: column; gap: 40px; }
+  @media (min-width: 860px) { .g-faq-groups { gap: 56px; } }
+  .g-faq-group { display: grid; gap: 16px; align-items: start; scroll-margin-top: calc(var(--nav-h, 64px) + 16px); }
+  @media (min-width: 1024px) { .g-faq-group { grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr); gap: 56px; } }
+  .g-faq-group > h2 {
+    margin: 0; font-family: var(--font-headline); font-weight: 700; color: var(--navy); font-size: clamp(24px, 2.6vw, 32px);
+    line-height: 1.12; letter-spacing: -0.03em; text-wrap: balance;
+  }
+  @media (min-width: 1024px) { .g-faq-group > h2 { position: sticky; top: calc(var(--nav-h, 64px) + 24px); padding-top: 14px; } }
+  .g-faq-group details { scroll-margin-top: calc(var(--nav-h, 64px) + 16px); }
+  .g-faq-group .g-faq-a > p { margin: 0; }
+
+  .g-faq-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin-top: 14px; }
+  .g-faq-src {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); text-decoration: underline;
+    text-decoration-color: rgba(0, 43, 109, 0.28); text-underline-offset: 3px; border-radius: 6px; outline: none;
+    transition: color 160ms ease, text-decoration-color 160ms ease;
+  }
+  .g-faq-src svg { width: 13px; height: 13px; flex: none; }
+  .g-faq-src:hover { color: var(--navy); text-decoration-color: var(--navy); }
+  .g-faq-src:active { opacity: 0.75; }
+  .g-faq-src:focus-visible { box-shadow: var(--glas-focus); }
+  .g-faq-foot .g-tlink { font-size: 14.5px; }
+
+  /* ---------- niets gevonden ---------- */
+  .g-faq-empty { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 28px 24px; border-radius: var(--r-lg); background: #fff; }
+  .g-faq-empty p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--ink); max-width: 46ch; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .g-faq-clear, .g-faq-src { transition: none; }
+    .g-faq-clear:active { transform: none; }
+  }
+}

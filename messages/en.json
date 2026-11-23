@@ -2897,5 +2897,25 @@
     "cta_h2": "Ready for a full exam?",
     "cta_text": "Practice exam 1 is free for every part. You sign in with Google.",
     "cta_button": "Start for free"
+  },
+  "faq_page": {
+    "meta_title": "Dutch civic integration exam: frequently asked questions",
+    "meta_description": "Short answers to what candidates ask about the Dutch civic integration exam: passing, results, retakes, deadlines and A2 or B1. Each answer names its source.",
+    "breadcrumb": "Frequently asked questions",
+    "h1": "Questions about the civic integration exam",
+    "lead": "Short answers to what candidates ask most. Every answer names its source, and where DUO does not publish something, we say so.",
+    "draft_notice": "Draft. This page has not been reviewed by the teacher yet, so it is not in the menu and not in Google.",
+    "not_translated": "These answers are not available in Arabic yet. You are reading the English text below.",
+    "search_label": "Search the questions",
+    "search_placeholder": "Search, for example: result or fine",
+    "topics_label": "Choose a topic",
+    "all": "All topics",
+    "count": "{count, plural, one {# question} other {# questions}}",
+    "no_results": "No question found. Try another word, or choose a topic.",
+    "reset": "Show all questions",
+    "source": "Source",
+    "cta_h2": "Ready to practise?",
+    "cta_text": "Do 10 questions per exam part, without an account. Each question comes with an explanation.",
+    "cta_button": "Start practising for free"
   }
 }

@@ -6,6 +6,7 @@ import { hasFreePractice } from '@/data/free-practice';
 import { b1TasterSkills } from '@/lib/free-practice-b1';
 import { hasDbFreePractice } from '@/lib/free-practice-db';
 import { FEATURES } from '@/lib/features';
+import { FAQ_INDEXED_LOCALES, FAQ_REVIEWED } from '@/data/faq';
 import { getSortedPosts, getPostSlug, hasTranslation } from '@/data/blog-posts';
 import { publishedGuides, indexableLocales } from '@/data/guides/helpers';
 
@@ -94,6 +95,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const locale of ['nl', 'en'] as const) {
     entries.push({ url: absUrl(locale, 'herexamen'), changeFrequency: 'monthly', priority: 0.8 });
     entries.push({ url: absUrl(locale, 'voorbeeldvragen'), changeFrequency: 'monthly', priority: 0.8 });
+  }
+
+  /* De FAQ-hub (`/veelgestelde-vragen`). Staat hier pas als de docent de antwoorden heeft nagekeken:
+     `FAQ_REVIEWED` in `data/faq.ts` is dezelfde constante die de pagina zelf leest voor `robots`, de
+     conceptmelding en de JSON-LD. Eén schakelaar, zodat de sitemap nooit een noindex-URL adverteert. */
+  if (FAQ_REVIEWED) {
+    for (const locale of FAQ_INDEXED_LOCALES) {
+      entries.push({ url: absUrl(locale, 'veelgestelde-vragen'), changeFrequency: 'monthly', priority: 0.7 });
+    }
   }
 
   /* One overview page per (level, onderdeel).

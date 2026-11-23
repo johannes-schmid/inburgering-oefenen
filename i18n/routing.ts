@@ -133,6 +133,11 @@ export const routing = defineRouting({
       en: '/example-questions',
       ar: '/أسئلة-نموذجية',
     },
+    '/veelgestelde-vragen': {
+      nl: '/veelgestelde-vragen',
+      en: '/faq',
+      ar: '/الأسئلة-الشائعة',
+    },
 
     // ── Kennisgidsen ─────────────────────────────────────────────────────────
     /* Sectie-slug én gids-slug zijn vertaald. De tweede is een parameterwaarde, en die

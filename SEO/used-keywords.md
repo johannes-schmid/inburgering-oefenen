@@ -62,3 +62,6 @@ Reserved so a future session doesn't target them from a second angle:
 - `wet inburgering 2021` — blocked on reading the 2025-10-21 statute amendment
 - `hoe lang duurt inburgeren` — `/blog/hoe-lang-duurt-inburgeren` (live 2026-11-23, nagekeken door Amber; cijfers uit `facts.md` §15)
 - `hoeveel fouten mag je maken inburgeringsexamen` — `/blog/hoeveel-fouten-inburgeringsexamen` (live 2026-11-23, nagekeken door Amber). Blogpost en geen gids: `tests-unit/guides.test.ts` weigert in een gids elke vermelding van "18 van de 25", en deze post moet het getal kunnen noemen om het te weerleggen.
+- `hoe wordt schrijven a2 nagekeken` / `beoordeling schrijven spreken inburgering` — `/blog/hoe-wordt-schrijven-spreken-nagekeken` (live 2026-11-23, nagekeken door Amber; `facts.md` §16)
+- `inburgeringsexamen veelgestelde vragen` / `inburgering exam FAQ` — `/veelgestelde-vragen` (live 2026-11-23, nagekeken door Amber)
+- `a2 or b1 naturalisation` — `/en/civic-integration/naturalisation-language-requirement` (Engelse vertaling van `taaleis-naturalisatie`, 2026-11-23)

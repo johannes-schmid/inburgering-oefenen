@@ -2897,5 +2897,25 @@
     "cta_h2": "Klaar voor een heel examen?",
     "cta_text": "Oefenexamen 1 is gratis, bij elk onderdeel. Je logt in met Google.",
     "cta_button": "Start gratis"
+  },
+  "faq_page": {
+    "meta_title": "Veelgestelde vragen over het inburgeringsexamen",
+    "meta_description": "Korte antwoorden op de vragen die kandidaten stellen over het inburgeringsexamen: slagen, uitslag, herkansen, termijn en A2 of B1. Elk antwoord met een bron.",
+    "breadcrumb": "Veelgestelde vragen",
+    "h1": "Veelgestelde vragen over het inburgeringsexamen",
+    "lead": "Korte antwoorden op wat kandidaten het meest vragen. Bij elk antwoord staat de bron, en waar DUO iets niet publiceert, zeggen we dat.",
+    "draft_notice": "Concept. Deze pagina is nog niet nagekeken door de docent en staat daarom niet in het menu en niet in Google.",
+    "not_translated": "Deze antwoorden zijn nog niet in het Arabisch beschikbaar. Je leest hieronder de Engelse tekst.",
+    "search_label": "Zoek in de vragen",
+    "search_placeholder": "Zoek, bijvoorbeeld: uitslag of boete",
+    "topics_label": "Kies een onderwerp",
+    "all": "Alle onderwerpen",
+    "count": "{count, plural, one {# vraag} other {# vragen}}",
+    "no_results": "Geen vraag gevonden. Probeer een ander woord, of kies een onderwerp.",
+    "reset": "Toon alle vragen",
+    "source": "Bron",
+    "cta_h2": "Klaar om te oefenen?",
+    "cta_text": "Maak 10 vragen per onderdeel, zonder account. Je ziet bij elke vraag de uitleg.",
+    "cta_button": "Begin met gratis oefenen"
   }
 }

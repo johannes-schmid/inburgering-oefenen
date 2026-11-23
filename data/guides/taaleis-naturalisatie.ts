@@ -26,23 +26,23 @@ import type { Guide } from './types';
 import { fact } from './types';
 import { I_CHECK, I_X, I_USERS, I_LANDMARK, I_HOME, I_ROUTE, note, inlineCta, factTwo } from './kit';
 
-const SRC_NATURALISEREN = 'https://www.inburgeren.nl/u-gaat-inburgeren/naturaliseren.jsp';
-const SRC_WI2021 = 'https://wetten.overheid.nl/BWBR0044770/';
-const SRC_BESLUIT = 'https://wetten.overheid.nl/BWBR0045555';
-const SRC_DIVOSA_NAT = 'https://www.divosa.nl/publicaties/wet-inburgering-vraag-en-antwoord/algemeen/naturalisatie';
-const SRC_DIVOSA_EXAM = 'https://www.divosa.nl/publicaties/wet-inburgering-vraag-en-antwoord/leerroutes-en-onderwijs/examinering';
-const SRC_DUO_LEERROUTES = 'https://duo.nl/zakelijk/inburgering-ketenpartners/wet-inburgering-2021/leerbaarheidstoets-en-leerroutes/leerroutes.jsp';
-const SRC_IND_VERBLIJF = 'https://ind.nl/nl/met-een-verblijfsvergunning-wonen-in-nederland/inburgering-bij-sterkere-verblijfsvergunning';
-const SRC_DIPLOMA = 'https://www.inburgeren.nl/examen-doen/diploma.jsp';
-const SRC_IND_TOETS = 'https://ind.nl/nl/documenten/03-2026/uitvoeringstoets-wetsvoorstel-rijkswet-op-het-nederlanderschap-rwn-februari-2026.pdf';
-const SRC_RIJKSOVERHEID_10 = 'https://www.rijksoverheid.nl/actueel/nieuws/2025/09/26/kabinet-wil-naturalisatietermijn-verlengen-van-5-naar-10-jaar';
-const SRC_KAMERVRAGEN = 'https://zoek.officielebekendmakingen.nl/ah-tk-20252026-1163.html';
-const CHECKED = '03-11-2026';
+export const SRC_NATURALISEREN = 'https://www.inburgeren.nl/u-gaat-inburgeren/naturaliseren.jsp';
+export const SRC_WI2021 = 'https://wetten.overheid.nl/BWBR0044770/';
+export const SRC_BESLUIT = 'https://wetten.overheid.nl/BWBR0045555';
+export const SRC_DIVOSA_NAT = 'https://www.divosa.nl/publicaties/wet-inburgering-vraag-en-antwoord/algemeen/naturalisatie';
+export const SRC_DIVOSA_EXAM = 'https://www.divosa.nl/publicaties/wet-inburgering-vraag-en-antwoord/leerroutes-en-onderwijs/examinering';
+export const SRC_DUO_LEERROUTES = 'https://duo.nl/zakelijk/inburgering-ketenpartners/wet-inburgering-2021/leerbaarheidstoets-en-leerroutes/leerroutes.jsp';
+export const SRC_IND_VERBLIJF = 'https://ind.nl/nl/met-een-verblijfsvergunning-wonen-in-nederland/inburgering-bij-sterkere-verblijfsvergunning';
+export const SRC_DIPLOMA = 'https://www.inburgeren.nl/examen-doen/diploma.jsp';
+export const SRC_IND_TOETS = 'https://ind.nl/nl/documenten/03-2026/uitvoeringstoets-wetsvoorstel-rijkswet-op-het-nederlanderschap-rwn-februari-2026.pdf';
+export const SRC_RIJKSOVERHEID_10 = 'https://www.rijksoverheid.nl/actueel/nieuws/2025/09/26/kabinet-wil-naturalisatietermijn-verlengen-van-5-naar-10-jaar';
+export const SRC_KAMERVRAGEN = 'https://zoek.officielebekendmakingen.nl/ah-tk-20252026-1163.html';
+export const CHECKED = '03-11-2026';
 
-const card = (icon: string, title: string, body: string) =>
+export const card = (icon: string, title: string, body: string) =>
   `<div class="guide-card"><span class="guide-card-icon">${icon}</span><h3>${title}</h3><p>${body}</p></div>`;
 
-const row = (k: string, v: string) =>
+export const row = (k: string, v: string) =>
   `<div class="compare-row"><p class="compare-key">${k}</p><p class="compare-val">${v}</p></div>`;
 
 const guide: Guide = {

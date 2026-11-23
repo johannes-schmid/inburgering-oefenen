@@ -461,6 +461,34 @@ function element(id: string, loc: Loc) {
       );
     }
 
+    /* Bij `hoe-wordt-schrijven-spreken-nagekeken`. Nederlands en Engels: die post heeft een Engelse
+     * tekst. Arabisch valt terug op de Nederlandse post en vraagt dit element dus met `nl`. Elke
+     * bewering komt uit de beoordelingsmodellen van DUO (SEO/facts.md §16). */
+    case 'nakijken-klopt': {
+      const en = loc === 'en';
+      const beweringen = en
+        ? [
+            { id: 'n1', tekst: 'One spelling mistake and you lose the points for spelling.', klopt: false, uitleg: 'For the top score your spelling must be almost correct. Mistakes must not make the text harder to understand.', bron: 'Assessment model Writing A2' },
+            { id: 'n2', tekst: 'If your answer does not fit the question, your grammar is not scored either.', klopt: true, uitleg: 'If adequacy gets 0 points, all other aspects get 0 as well.', bron: 'Assessment model Writing A2 and Speaking A2' },
+            { id: 'n3', tekst: 'An accent costs you points in Speaking.', klopt: false, uitleg: 'The top score for pronunciation is: easy to understand, despite an accent or an occasional mispronounced word.', bron: 'Assessment model Speaking A2' },
+            { id: 'n4', tekst: 'Words like want and omdat help your score.', klopt: true, uitleg: 'The model names en, maar, want and omdat as a way to show coherence.', bron: 'Assessment model Writing A2 and Speaking A2' },
+          ]
+        : [
+            { id: 'n1', tekst: 'Eén spelfout en je bent je punten voor spelling kwijt.', klopt: false, uitleg: 'Voor de hoogste score moet je spelling vrijwel correct zijn. Spelfouten mogen de begrijpelijkheid niet aantasten.', bron: 'Beoordelingsmodel Schrijven A2' },
+            { id: 'n2', tekst: 'Past je antwoord niet bij de vraag? Dan telt je grammatica ook niet meer.', klopt: true, uitleg: 'Krijgt adequaatheid 0 punten, dan krijgen alle andere onderdelen ook 0 punten.', bron: 'Beoordelingsmodel Schrijven A2 en Spreken A2' },
+            { id: 'n3', tekst: 'Een accent kost je punten bij Spreken.', klopt: false, uitleg: 'De hoogste score voor uitspraak is: goed verstaanbaar, ondanks een accent of af en toe een verkeerd uitgesproken woord.', bron: 'Beoordelingsmodel Spreken A2' },
+            { id: 'n4', tekst: 'Woorden als want en omdat helpen je score.', klopt: true, uitleg: 'Het model noemt en, maar, want en omdat als manier om samenhang te laten zien.', bron: 'Beoordelingsmodel Schrijven A2 en Spreken A2' },
+          ];
+      return (
+        <KloptHet
+          title={en ? 'True or not?' : 'Klopt het?'}
+          intro={en ? 'Four things people believe about the grading. Choose, and see what the model says.' : 'Vier dingen die mensen denken over het nakijken. Kies, en zie wat het model zegt.'}
+          labels={L.klopt[en ? 'en' : 'nl']}
+          beweringen={beweringen}
+        />
+      );
+    }
+
     default:
       return null;
   }

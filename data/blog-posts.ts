@@ -121,6 +121,9 @@ const SRC_DUO_CIJFERS = 'https://duo.nl/data/Totaal%20Nederland.pdf';
 const SRC_ROUTES = 'https://www.inburgeren.nl/u-gaat-inburgeren/';
 const SRC_EXTRA_TIJD = 'https://www.inburgeren.nl/extra-tijd/';
 const SRC_BOETE = 'https://www.inburgeren.nl/u-gaat-inburgeren/boete.jsp';
+const SRC_MODEL_SCHRIJVEN = 'https://duo.nl/zakelijk/images/beoordelingsmodel-vrij-schrijven-en-correspondentie.pdf';
+const SRC_MODEL_FORMULIER = 'https://duo.nl/zakelijk/images/beoordelingsmodel-schrijven-a2-formulieren.pdf';
+const SRC_MODEL_SPREKEN = 'https://duo.nl/zakelijk/images/beoordelingsmodel-spreekvaardigheid.pdf';
 /** De raadpleegdatum van de twee posts van 23-11-2026 (`SEO/facts.md` §2 en §15). */
 const CHECKED_NOV = '23-11-2026';
 
@@ -214,6 +217,33 @@ function stackedBar(o: { title: string; sub: string; parts: [label: string, coun
   return `<figure class="g-chart"><p class="g-chart-title">${o.title}</p><p class="g-chart-sub">${o.sub}</p>` +
     `<div class="g-stack" aria-hidden="true">${segs}</div><ul class="g-stack-legend">${legend}</ul>` +
     (o.note ? `<p class="g-chart-note">${o.note}</p>` : '') + `</figure>`;
+}
+
+/**
+ * Een beoordelingsmodel in beeld: per aspect zoveel bolletjes als er punten te halen zijn, met de
+ * omschrijving van de hoogste score ernaast. De bolletjes laten zien hoe zwaar een aspect weegt;
+ * het getal staat er als tekst bij, dus het plaatje leunt niet op de bolletjes alleen.
+ * `first` markeert het aspect waar de rest van afhangt (één oranje accent per plaatje).
+ */
+function rubric(o: { title: string; sub: string; unit: [one: string, many: string]; rows: [aspect: string, max: number, top: string][]; note?: string }): string {
+  const rows = o.rows.map(([aspect, max, top], i) =>
+    `<div class="g-rub-row${i === 0 ? ' is-first' : ''}"><div class="g-rub-head"><span class="g-rub-name">${aspect}</span>` +
+    `<span class="g-rub-pips" aria-hidden="true">${'<i></i>'.repeat(max)}</span><span class="g-rub-max">0–${max} ${max === 1 ? o.unit[0] : o.unit[1]}</span></div>` +
+    `<p class="g-rub-top">${top}</p></div>`).join('');
+  return `<figure class="g-chart"><p class="g-chart-title">${o.title}</p><p class="g-chart-sub">${o.sub}</p>` +
+    `<div class="g-rub">${rows}</div>` + (o.note ? `<p class="g-chart-note">${o.note}</p>` : '') + `</figure>`;
+}
+
+/**
+ * Een voorbeeldantwoord met genummerde markeringen en eronder wat elke markering laat zien.
+ * `text` is HTML met `<mark data-n="1">…</mark>`; de voorbeeldtekst blijft in elke taal Nederlands
+ * (dat is wat er op het examen geschreven wordt), alleen de toelichting volgt de taal van de post.
+ */
+function annotated(o: { title: string; sub: string; text: string; notes: [aspect: string, body: string][] }): string {
+  const notes = o.notes.map(([aspect, body], i) =>
+    `<li><span class="g-anno-n" aria-hidden="true">${i + 1}</span><span><b>${aspect}.</b> ${body}</span></li>`).join('');
+  return `<figure class="g-chart"><p class="g-chart-title">${o.title}</p><p class="g-chart-sub">${o.sub}</p>` +
+    `<div class="g-anno-text" dir="ltr" lang="nl">${o.text}</div><ol class="g-anno-notes">${notes}</ol></figure>`;
 }
 
 const POSTS: BlogPost[] = [
@@ -2774,6 +2804,289 @@ ${fact('"Het examen Lezen op niveau A2 doet u op de computer. U moet teksten lez
     ctaDesc: 'Doe een gratis oefenset van tien vragen per onderdeel. Je krijgt uitleg bij elk antwoord.',
     ctaHref: '/oefenen',
     ctaLabel: 'Begin met gratis oefenen',
+  },
+  // ───────────────────────────────────────────────────────────── 8. HOE WORDT HET NAGEKEKEN
+  /* Live sinds 23-11-2026: door Amber nagekeken (melding eigenaar, 23-11).
+   *
+   * De grootste onbeantwoorde vraag op Reddit (r/learndutch, onderzoek 23-11): "How do they
+   * actually grade the writing exam?", "How many grammar mistakes can you make in A2 speaking?",
+   * "How harshly are spelling mistakes penalised?". Het antwoord bestaat: DUO publiceert de
+   * beoordelingsmodellen op de pagina voor ketenpartners, niet op inburgeren.nl. Geen concurrent
+   * verwijst ernaar. Alles hieronder is letterlijk uit die drie pdf's (`SEO/facts.md` §16).
+   *
+   * Bewust NIET in de tekst (§16): hoeveel punten je nodig hebt, een opgeteld maximum per opdracht,
+   * een puntenaftrek voor aanhef of groet, en een score voor het voorbeeldantwoord. De markeringen
+   * bij het voorbeeld noemen het aspect, nooit een aantal punten.
+   *
+   * Het voorbeeldantwoord is het "betere antwoord" van voorbeeld 2 uit de nagekeken gids
+   * `schrijven-examen-voorbeelden`. De foto is een plaatshouder. */
+  {
+    slug: 'hoe-wordt-schrijven-spreken-nagekeken',
+    title: 'Zo wordt Schrijven en Spreken A2 nagekeken',
+    description: 'Hoe wordt het examen Schrijven en Spreken A2 nagekeken? DUO geeft punten op vijf of zes dingen. Het belangrijkste: doe je wat de opdracht vraagt? Met voorbeeld.',
+    category: 'Gids & Informatie',
+    categoryKey: 'gids',
+    categoryColor: 'blue',
+    datePublished: '2026-11-23',
+    dateModified: '2026-11-23',
+    dateLabel: '23 november 2026',
+    breadcrumb: 'Zo wordt het nagekeken',
+    heroTitle: 'Zo wordt Schrijven en Spreken A2 nagekeken',
+    heroSubtitle: 'Hoeveel spelfouten mag je maken? Kost een accent punten? DUO heeft het beoordelingsmodel gepubliceerd. Hier staat wat erin staat.',
+    image: '/images/blog/veelgemaakte-fouten-schrijven-examen-a2.jpg',
+    imageAlt: 'Een geschreven antwoord voor het examen Schrijven A2 met een pen ernaast',
+    readingMinutes: 5,
+    faq: [
+      {
+        q: 'Hoe wordt het examen Schrijven A2 nagekeken?',
+        a: 'Een beoordelaar geeft punten op vijf dingen: adequaatheid (doe je wat de opdracht vraagt), grammatica, spelling, woordgebruik en coherentie. Adequaatheid weegt het zwaarst. Bij een formulier zijn het er drie: adequaatheid, spelling en woordgebruik.',
+      },
+      {
+        q: 'Hoeveel spelfouten mag je maken bij Schrijven A2?',
+        a: 'Er staat geen aantal in het model. Voor de hoogste score moet de spelling "vrijwel correct" zijn, en spelfouten mogen de begrijpelijkheid niet aantasten. Een paar kleine fouten kosten je dus niet meteen het examen.',
+      },
+      {
+        q: 'Kost een accent punten bij Spreken A2?',
+        a: 'Nee. De hoogste score voor uitspraak krijg je als je goed verstaanbaar bent, "ondanks een accent of af en toe een verkeerd uitgesproken woord". Het gaat om verstaanbaar zijn, niet om klinken als een Nederlander.',
+      },
+      {
+        q: 'Wat gebeurt er als ik de vraag niet beantwoord?',
+        a: 'Dan krijg je voor adequaatheid 0 punten, en dan krijgen alle andere onderdelen ook 0 punten. Goede grammatica helpt dan niet meer. Geef dus altijd een antwoord dat bij de vraag past.',
+      },
+      {
+        q: 'Hoeveel punten heb ik nodig om te slagen?',
+        a: 'Dat maakt DUO niet bekend. Het model geeft punten per onderdeel. Hoe die punten een cijfer worden, en waar de grens ligt, staat er niet in.',
+      },
+      {
+        q: 'Mag ik want en omdat gebruiken?',
+        a: 'Ja, en het helpt. Het model noemt eenvoudige voegwoorden zoals en, maar, want en omdat als manier om samenhang in je tekst of antwoord te laten zien.',
+      },
+    ],
+    articleHtml: `
+<p><strong>Hoe wordt Schrijven en Spreken A2 nagekeken?</strong> Een beoordelaar geeft punten op een vaste lijst: <strong>vijf dingen bij Schrijven, zes bij Spreken</strong>. Het belangrijkste is steeds hetzelfde: doe je wat de opdracht vraagt? DUO heeft deze lijst gepubliceerd, maar niet op de pagina voor kandidaten. Daarom kent bijna niemand hem.</p>
+
+<h2 id="hoofdregel">De regel die alles bepaalt</h2>
+
+<p>Het eerste punt heet <strong>adequaatheid</strong>. Dat betekent: is dit een antwoord op de vraag, en is het te begrijpen? Krijg je daar 0 punten, dan krijg je voor al het andere ook 0 punten.</p>
+
+${fact('"Indien adequaatheid 0 punten krijgt, worden de overige beoordeelaspecten met een 0 beoordeeld."', 'DUO — Beoordelingsmodel Schrijven A2', SRC_MODEL_SCHRIJVEN, CHECKED_NOV)}
+
+<div class="info-box info-box-green">
+  <p>Dus: een eenvoudig antwoord op de juiste vraag is beter dan een mooie zin over iets anders.</p>
+</div>
+
+<h2 id="schrijven">Schrijven: vijf dingen</h2>
+
+${rubric({
+  title: 'Waar een beoordelaar op let bij Schrijven A2',
+  sub: 'Bij een brief, e-mail of korte tekst. Elk bolletje is een punt.',
+  unit: ['punt', 'punten'],
+  rows: [
+    ['Adequaatheid', 3, 'Je tekst is een uitstekende uitwerking van de opdracht.'],
+    ['Grammatica', 2, 'Nauwelijks of geen grammaticale fouten.'],
+    ['Spelling', 2, 'Vrijwel correct. Spelfouten tasten de begrijpelijkheid niet aan.'],
+    ['Woordgebruik', 2, 'Gevarieerd, en het past bij de opdracht.'],
+    ['Coherentie', 1, 'Er is samenhang, bijvoorbeeld door en, maar, want, omdat, hij, zij, die of dat.'],
+  ],
+  note: 'Bij een formulier let de beoordelaar op drie dingen: adequaatheid, spelling en woordgebruik.',
+})}
+
+${fact('Schrijven A2, vrij schrijven en correspondentie: adequaatheid/begrijpelijkheid 0 tot 3 punten, grammatica 0 tot 2, spelling 0 tot 2, woordgebruik 0 tot 2, coherentie 0 of 1. Hoogste score spelling: "De spelling is vrijwel correct. Eventuele spelfouten tasten de begrijpelijkheid niet aan."', 'DUO — Beoordelingsmodel Schrijven A2, vrij schrijven en correspondentie', SRC_MODEL_SCHRIJVEN, CHECKED_NOV)}
+
+${fact('Schrijven A2, formulier: adequaatheid/begrijpelijkheid 0 tot 3 punten, spelling 0 tot 2, woordgebruik 0 tot 2. Voor 1 punt spelling: "Persoonlijke gegevens zijn correct gespeld."', 'DUO — Beoordelingsmodel Schrijven A2, formulier', SRC_MODEL_FORMULIER, CHECKED_NOV)}
+
+<p>Twee dingen vallen op. Je hoeft niet foutloos te spellen: "vrijwel correct" is genoeg voor de hoogste score. En wie alleen de woorden uit de opdracht overschrijft, krijgt voor woordgebruik 0 punten. Gebruik dus ook je eigen woorden.</p>
+
+<h2 id="voorbeeld">Zo ziet dat eruit in een antwoord</h2>
+
+<p>De opdracht: je verwarming is kapot. Schrijf een e-mail aan de woningcorporatie. Schrijf wat er kapot is, sinds wanneer, en wanneer je thuis bent.</p>
+
+${annotated({
+  title: 'Een goed antwoord, met wat het laat zien',
+  sub: 'De cijfers horen bij de uitleg eronder.',
+  text: 'Beste meneer, mevrouw,<br><br><mark data-n="1">De verwarming in mijn huis doet het niet.</mark> <mark data-n="2">Hij</mark> is <mark data-n="1">sinds zaterdag</mark> kapot. Het is erg koud in huis. <mark data-n="1">Ik ben maandag en dinsdag de hele dag thuis.</mark> Kan <mark data-n="3">de monteur</mark> <mark data-n="2">dan</mark> komen?<br><br>Met vriendelijke groet,<br>Ahmed Yilmaz',
+  notes: [
+    ['Adequaatheid', 'De drie dingen uit de opdracht staan er allemaal in, elk in een eigen zin.'],
+    ['Coherentie', '"Hij" wijst terug naar de verwarming, "dan" naar maandag en dinsdag. Zo horen de zinnen bij elkaar.'],
+    ['Woordgebruik', 'Eigen woorden die bij de situatie passen, niet alleen woorden uit de opdracht.'],
+  ],
+})}
+
+<p>Dit antwoord gebruikt geen moeilijk woord en geen lange zin. Meer voorbeelden, ook van zwakke antwoorden, staan in <a href="/nl/taalexamens/schrijven-examen-voorbeelden">Schrijven A2: vier voorbeelden</a>.</p>
+
+<h2 id="spreken">Spreken: zes dingen</h2>
+
+${rubric({
+  title: 'Waar een beoordelaar op let bij Spreken A2',
+  sub: 'Elk bolletje is een punt.',
+  unit: ['punt', 'punten'],
+  rows: [
+    ['Adequaatheid', 3, 'Je antwoord is helder en een uitstekend antwoord op de vraag.'],
+    ['Woordgebruik', 2, 'Gevarieerd, en de meeste woorden zijn goed gebruikt.'],
+    ['Grammatica', 2, 'Nauwelijks of geen grammaticale fouten.'],
+    ['Vloeiendheid', 2, 'Vloeiend. Pauzes mogen nog voorkomen bij langere antwoorden.'],
+    ['Coherentie', 1, 'Er is samenhang, bijvoorbeeld door en, maar, want of omdat.'],
+    ['Uitspraak', 2, 'Goed verstaanbaar, ondanks een accent of af en toe een verkeerd uitgesproken woord.'],
+  ],
+})}
+
+${fact('Spreken A2: adequaatheid/begrijpelijkheid 0 tot 3 punten, woordgebruik 0 tot 2, grammatica 0 tot 2, vloeiendheid 0 tot 2, coherentie 0 of 1, uitspraak 0 tot 2. Hoogste score uitspraak: "De uiting is goed verstaanbaar, ook voor een ongeoefende luisteraar, ondanks een accent of af en toe een verkeerd uitgesproken woord." Hoogste score vloeiendheid: "Pauzes en/of herformuleringen komen nog voor bij langere uitingen."', 'DUO — Beoordelingsmodel Spreken A2, versie 10-08-2026', SRC_MODEL_SPREKEN, CHECKED_NOV)}
+
+<p>Een accent kost je dus geen punten, en even nadenken mag. Wat wel 0 punten geeft: niets zeggen, of iets zeggen dat geen antwoord is op de vraag.</p>
+
+<!--uitleg:nakijken-klopt-->
+
+<h2 id="niet-bekend">Wat we niet weten</h2>
+
+<p>Het model zegt hoeveel punten je per onderdeel kunt krijgen. Het zegt niet hoeveel punten je nodig hebt. Hoe de punten een cijfer worden, maakt DUO niet bekend. Lees daarover <a href="/nl/blog/hoeveel-fouten-inburgeringsexamen">hoeveel fouten je mag maken</a>.</p>
+
+<h2 id="doen">Wat je hiermee doet</h2>
+
+<ul>
+  <li><span><strong>Lees de opdracht twee keer.</strong> Tel hoeveel dingen er gevraagd worden, en geef op elk ding antwoord.</span></li>
+  <li><span><strong>Schrijf korte zinnen.</strong> Een korte zin heeft minder fouten en is duidelijker.</span></li>
+  <li><span><strong>Gebruik je eigen woorden.</strong> Schrijf de opdracht niet over.</span></li>
+  <li><span><strong>Verbind je zinnen</strong> met en, maar, want of omdat. Twijfel je tussen de laatste twee? Lees <a href="/nl/blog/want-of-omdat">want of omdat</a>.</span></li>
+</ul>
+`,
+    sidebarHtml: `<b>In het kort</b>
+<ul>
+  <li>Schrijven: vijf dingen. Spreken: zes dingen.</li>
+  <li>Het zwaarst weegt: doe je wat de opdracht vraagt?</li>
+  <li>Geen antwoord op de vraag is 0 punten voor alles.</li>
+  <li>Een accent kost geen punten.</li>
+  <li>Hoeveel punten je nodig hebt, maakt DUO niet bekend.</li>
+</ul>`,
+    relatedPosts: [
+      { slug: 'hoeveel-fouten-inburgeringsexamen', title: 'Hoeveel fouten mag je maken?', desc: 'DUO noemt geen getal. Dit staat wel vast' },
+      { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'De 8 fouten bij Schrijven A2', desc: 'Hoofdletters, komma’s, tijden en ‘u’ of ‘je’' },
+      { slug: 'want-of-omdat', title: 'Want of omdat?', desc: 'Waarom ‘want’ op het examen bijna altijd de slimmere keuze is' },
+    ],
+    ctaTitle: 'Oefen Schrijven en Spreken met feedback',
+    ctaDesc: 'Doe oefenexamen 1 gratis. Je krijgt feedback op je eigen tekst en je eigen antwoord.',
+    ctaHref: '/oefenen',
+    ctaLabel: 'Begin met gratis oefenen',
+    translations: {
+      en: {
+        heroTitle: 'How Writing and Speaking A2 are graded',
+        description: 'How is the inburgering Writing and Speaking A2 exam graded? DUO scores five or six things. The main one: did you do what the task asks? With an example.',
+        category: 'Guide & Information',
+        breadcrumb: 'How it is graded',
+        dateLabel: '23 November 2026',
+        imageAlt: 'A handwritten answer for the Writing A2 exam with a pen next to it',
+        heroSubtitle: 'How many spelling mistakes can you make? Does an accent cost points? DUO has published its assessment model. This is what it says.',
+        ctaTitle: 'Practise Writing and Speaking with feedback',
+        ctaDesc: 'Practice exam 1 is free. You get feedback on your own text and your own answer.',
+        ctaLabel: 'Start practising for free',
+        relatedPosts: [
+          { slug: 'veelgemaakte-fouten-schrijven-examen-a2', title: 'The 8 mistakes in Writing A2', desc: 'Capitals, commas, tenses and ‘u’ or ‘je’' },
+          { slug: 'want-of-omdat', title: 'Want or omdat?', desc: 'Why ‘want’ is almost always the smarter choice in the exam' },
+        ],
+        faq: [
+          { q: 'How is the Writing A2 exam graded?', a: 'An assessor gives points for five things: adequacy (did you do what the task asks), grammar, spelling, vocabulary and coherence. Adequacy counts most. For a form there are three: adequacy, spelling and vocabulary.' },
+          { q: 'How many spelling mistakes can you make in Writing A2?', a: 'The model gives no number. For the top score your spelling must be "almost correct", and mistakes must not make the text harder to understand. A few small mistakes do not fail you.' },
+          { q: 'Does an accent cost points in Speaking A2?', a: 'No. You get the top score for pronunciation when you are easy to understand, "despite an accent or an occasional mispronounced word". It is about being understood, not about sounding Dutch.' },
+          { q: 'What happens if I do not answer the question?', a: 'Then you get 0 points for adequacy, and every other aspect also gets 0. Good grammar no longer helps. Always give an answer that fits the question.' },
+          { q: 'How many points do I need to pass?', a: 'DUO does not publish that. The model gives points per aspect. How those points become a grade, and where the pass mark lies, is not in it.' },
+          { q: 'Can I use want and omdat?', a: 'Yes, and it helps. The model names simple linking words such as en, maar, want and omdat as a way to show coherence.' },
+        ],
+        articleHtml: `
+<p><strong>How are Writing and Speaking A2 graded?</strong> An assessor gives points from a fixed list: <strong>five things for Writing, six for Speaking</strong>. The most important one is always the same: did you do what the task asks? DUO has published this list, but not on the page for candidates. That is why almost nobody knows it.</p>
+
+<h2 id="hoofdregel">The rule that decides everything</h2>
+
+<p>The first item is called <strong>adequacy</strong> (adequaatheid). It means: is this an answer to the question, and can it be understood? If you get 0 points there, you get 0 points for everything else as well.</p>
+
+${factEn('"Indien adequaatheid 0 punten krijgt, worden de overige beoordeelaspecten met een 0 beoordeeld." If adequacy gets 0 points, all other aspects are scored 0.', 'DUO — Assessment model Writing A2', SRC_MODEL_SCHRIJVEN, CHECKED_NOV)}
+
+<div class="info-box info-box-green">
+  <p>So a simple answer to the right question beats a beautiful sentence about something else.</p>
+</div>
+
+<h2 id="schrijven">Writing: five things</h2>
+
+${rubric({
+  title: 'What an assessor looks at in Writing A2',
+  sub: 'For a letter, an e-mail or a short text. Each dot is one point.',
+  unit: ['point', 'points'],
+  rows: [
+    ['Adequacy', 3, 'Your text is an excellent answer to the task.'],
+    ['Grammar', 2, 'Hardly any or no grammar mistakes.'],
+    ['Spelling', 2, 'Almost correct. Mistakes do not make the text harder to understand.'],
+    ['Vocabulary', 2, 'Varied, and it fits the task.'],
+    ['Coherence', 1, 'The sentences connect, for example with en, maar, want, omdat, hij, zij, die or dat.'],
+  ],
+  note: 'For a form the assessor looks at three things: adequacy, spelling and vocabulary.',
+})}
+
+${factEn('Writing A2, free writing and correspondence: adequacy 0 to 3 points, grammar 0 to 2, spelling 0 to 2, vocabulary 0 to 2, coherence 0 or 1. Top score for spelling: "De spelling is vrijwel correct. Eventuele spelfouten tasten de begrijpelijkheid niet aan."', 'DUO — Assessment model Writing A2, free writing and correspondence', SRC_MODEL_SCHRIJVEN, CHECKED_NOV)}
+
+${factEn('Writing A2, form: adequacy 0 to 3 points, spelling 0 to 2, vocabulary 0 to 2. For 1 point in spelling: "Persoonlijke gegevens zijn correct gespeld" (personal details are spelled correctly).', 'DUO — Assessment model Writing A2, form', SRC_MODEL_FORMULIER, CHECKED_NOV)}
+
+<p>Two things stand out. Your spelling does not have to be perfect: "almost correct" is enough for the top score. And if you only copy words from the task, you get 0 points for vocabulary. So use your own words too.</p>
+
+<h2 id="voorbeeld">What that looks like in an answer</h2>
+
+<p>The task: your heating is broken. Write an e-mail to the housing association. Say what is broken, since when, and when you are at home.</p>
+
+${annotated({
+  title: 'A good answer, and what it shows',
+  sub: 'The numbers match the notes below. The answer stays in Dutch: that is what you write in the exam.',
+  text: 'Beste meneer, mevrouw,<br><br><mark data-n="1">De verwarming in mijn huis doet het niet.</mark> <mark data-n="2">Hij</mark> is <mark data-n="1">sinds zaterdag</mark> kapot. Het is erg koud in huis. <mark data-n="1">Ik ben maandag en dinsdag de hele dag thuis.</mark> Kan <mark data-n="3">de monteur</mark> <mark data-n="2">dan</mark> komen?<br><br>Met vriendelijke groet,<br>Ahmed Yilmaz',
+  notes: [
+    ['Adequacy', 'All three things from the task are there, each in its own sentence.'],
+    ['Coherence', '"Hij" points back to the heating, "dan" to Monday and Tuesday. That ties the sentences together.'],
+    ['Vocabulary', 'Own words that fit the situation, not only words from the task.'],
+  ],
+})}
+
+<p>This answer uses no difficult word and no long sentence.</p>
+
+<h2 id="spreken">Speaking: six things</h2>
+
+${rubric({
+  title: 'What an assessor looks at in Speaking A2',
+  sub: 'Each dot is one point.',
+  unit: ['point', 'points'],
+  rows: [
+    ['Adequacy', 3, 'Your answer is clear and an excellent answer to the question.'],
+    ['Vocabulary', 2, 'Varied, and most words are used correctly.'],
+    ['Grammar', 2, 'Hardly any or no grammar mistakes.'],
+    ['Fluency', 2, 'Fluent. Pauses may still occur in longer answers.'],
+    ['Coherence', 1, 'The answer connects, for example with en, maar, want or omdat.'],
+    ['Pronunciation', 2, 'Easy to understand, despite an accent or an occasional mispronounced word.'],
+  ],
+})}
+
+${factEn('Speaking A2: adequacy 0 to 3 points, vocabulary 0 to 2, grammar 0 to 2, fluency 0 to 2, coherence 0 or 1, pronunciation 0 to 2. Top score for pronunciation: "De uiting is goed verstaanbaar, ook voor een ongeoefende luisteraar, ondanks een accent of af en toe een verkeerd uitgesproken woord."', 'DUO — Assessment model Speaking A2, version 10-08-2026', SRC_MODEL_SPREKEN, CHECKED_NOV)}
+
+<p>So an accent costs you no points, and you may stop to think. What does give 0 points: saying nothing, or saying something that does not answer the question.</p>
+
+<!--uitleg:nakijken-klopt-->
+
+<h2 id="niet-bekend">What we do not know</h2>
+
+<p>The model says how many points each aspect can give. It does not say how many points you need. DUO does not publish how the points become a grade.</p>
+
+<h2 id="doen">What to do with this</h2>
+
+<ul>
+  <li><span><strong>Read the task twice.</strong> Count how many things it asks for, and answer each one.</span></li>
+  <li><span><strong>Write short sentences.</strong> A short sentence has fewer mistakes and is clearer.</span></li>
+  <li><span><strong>Use your own words.</strong> Do not copy the task.</span></li>
+  <li><span><strong>Link your sentences</strong> with en, maar, want or omdat. Not sure about the last two? Read <a href="/en/blog/want-or-omdat-dutch">want or omdat</a>.</span></li>
+</ul>
+`,
+        sidebarHtml: `<b>In short</b>
+<ul>
+  <li>Writing: five things. Speaking: six things.</li>
+  <li>What counts most: did you do what the task asks?</li>
+  <li>No answer to the question means 0 points for everything.</li>
+  <li>An accent costs no points.</li>
+  <li>DUO does not publish how many points you need.</li>
+</ul>`,
+      },
+    },
   },
 ];
 

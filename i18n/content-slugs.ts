@@ -69,6 +69,7 @@ const POST_SLUGS: Record<string, Translated> = {
   'wederkerende-werkwoorden-nederlands': { en: 'dutch-reflexive-verbs',                   ar: 'الأفعال-الانعكاسية-الهولندية' },
   'hoe-lang-duurt-inburgeren':           { en: 'how-long-does-integration-take',          ar: 'كم-يستغرق-الاندماج' },
   'hoeveel-fouten-inburgeringsexamen':   { en: 'how-many-mistakes-integration-exam',      ar: 'كم-خطأ-في-امتحان-الاندماج' },
+  'hoe-wordt-schrijven-spreken-nagekeken': { en: 'how-writing-and-speaking-are-graded',   ar: 'كيف-تقيم-الكتابة-والتحدث' },
 };
 
 /**
