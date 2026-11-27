@@ -8,6 +8,7 @@ import { isOnaAvailable } from '@/lib/ona/access';
 import { ONA_CARD_COUNT } from '@/data/ona/cards';
 import { FREE_GRADED_PER_SKILL } from '@/lib/grading-limits';
 import { MODULES, parseSelection } from '@/lib/pricing';
+import { isSaleEligible, saleDiscountFor } from '@/lib/sale';
 import { DEFAULT_LEVEL, getOnderdeel, isOna, moduleGroupLabel, type SkillSlug } from '@/data/skills';
 import { fetchPublishedExamNumbers } from '@/lib/portal-progress';
 import AppShell from '../../components/AppShell';
@@ -149,7 +150,8 @@ export default async function PakkettenPage({
         <ModulePicker
           locale={locale}
           subscription={subscription}
-          initialCode={code ?? null}
+          initialCode={code ?? saleDiscountFor(meta)?.code ?? null}
+          saleEligible={isSaleEligible(meta)}
           initialSelection={picked.length ? picked : focus ? [focus] : []}
           modules={sellable.map(mod => {
             if (isOna(mod.skill)) {

@@ -8,6 +8,8 @@ import { abandonEmail, abandonSubject } from '@/lib/email/templates/abandon';
 import { guideDay2Email, guideDay2Subject, guideDay7Email, guideDay7Subject } from '@/lib/email/templates/guide';
 import { timelineReminderEmail, timelineReminderSubject } from '@/lib/email/templates/timeline';
 import { knmMigrationEmail, knmMigrationSubject } from '@/lib/email/templates/knmMigration';
+import { blackFridayEmail, blackFridaySubject } from '@/lib/email/templates/blackFriday';
+import { isSaleActive } from '@/lib/sale';
 import { buildTimelineEmailPayload } from '@/lib/tijdlijn/email-payload';
 import { pd } from '@/lib/tijdlijn/engine/dates';
 import { type EmailLocale } from '@/lib/email/i18n';
@@ -110,6 +112,17 @@ export async function GET(request: Request): Promise<Response> {
       } else if (row.campaign_type === 'knm_migration') {
         html = knmMigrationEmail((row.payload?.firstName as string) || '', row.payload?.segment === 'paid' ? 'paid' : 'free', locale, unsubscribeUrl);
         subject = knmMigrationSubject(locale);
+      } else if (row.campaign_type === 'black_friday') {
+        /* Na maandag 24:00 bestaat de korting niet meer; een mail die hem belooft gaat dan niet weg. */
+        if (!isSaleActive()) {
+          await supabase
+            .from(TABLE.EMAIL_CAMPAIGN_QUEUE)
+            .update({ status: 'failed', error_message: 'Actie voorbij' })
+            .eq('id', row.id);
+          continue;
+        }
+        html = blackFridayEmail((row.payload?.firstName as string) || '', locale, unsubscribeUrl);
+        subject = blackFridaySubject(locale);
       } else {
         continue;
       }

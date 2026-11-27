@@ -1,4 +1,5 @@
 import { KNM_MIGRATION_CODE, KNM_MIGRATION_PCT } from './knm-migration';
+import { BLACK_FRIDAY } from './black-friday';
 
 /**
  * De kortingscodes die de checkout accepteert.
@@ -16,10 +17,15 @@ export type DiscountCode = {
   pct: number;
   /** ISO-tijdstip; daarna is de code ongeldig. `null` = geen einddatum. */
   validUntil: string | null;
+  /** ISO-tijdstip; daarvóór is de code nog niet geldig. Weggelaten = meteen geldig. */
+  validFrom?: string;
 };
 
 export const DISCOUNT_CODES: DiscountCode[] = [
   { code: KNM_MIGRATION_CODE, pct: KNM_MIGRATION_PCT, validUntil: null },
+  // Wie in de actieweek afsluit, houdt de 10% zolang het abonnement loopt (`discountPctForCode`
+  // kijkt niet naar de datums). Of iemand de code mag gebruiken bepaalt `lib/sale.ts`.
+  { code: BLACK_FRIDAY.code, pct: BLACK_FRIDAY.pct, validFrom: BLACK_FRIDAY.startsAt, validUntil: BLACK_FRIDAY.endsAt },
 ];
 
 /** Hoofdletterongevoelig en zonder spaties eromheen, zoals mensen een code overtikken. */
@@ -33,7 +39,8 @@ export function findDiscountCode(
   if (!wanted) return null;
   const hit = codes.find(c => c.code === wanted);
   if (!hit) return null;
-  if (hit.validUntil && now > new Date(hit.validUntil)) return null;
+  if (hit.validUntil && now >= new Date(hit.validUntil)) return null;
+  if (hit.validFrom && now < new Date(hit.validFrom)) return null;
   return hit;
 }
 

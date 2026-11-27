@@ -2917,5 +2917,20 @@
     "cta_h2": "Ready to practise?",
     "cta_text": "Do 10 questions per exam part, without an account. Each question comes with an explanation.",
     "cta_button": "Start practising for free"
+  },
+  "sale": {
+    "aria": "Black Friday offer",
+    "title": "Black Friday: {pct}% off your subscription, every month",
+    "ends": "Offer ends in",
+    "days": "{count, plural, one {# day} other {# days}}",
+    "cta": "See prices",
+    "close": "Close",
+    "pb_note": "Black Friday: {pct}% off every month for as long as your subscription runs. Subscribe by Monday 30 November.",
+    "bar_title": "{pct}% off your subscription, every month",
+    "unit_d": "d",
+    "unit_h": "h",
+    "unit_m": "m",
+    "unit_s": "s",
+    "bar_title_short": "{pct}% off your subscription"
   }
 }

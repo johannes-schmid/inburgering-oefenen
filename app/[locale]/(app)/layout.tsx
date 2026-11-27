@@ -5,6 +5,7 @@ import '@/app/portal.css';
 import '@/app/glas-portal.css';
 import AnalyticsProviders from '@/components/AnalyticsProviders';
 import DevStateBar from '@/components/dev/DevStateBar';
+import SaleBanner from '@/components/site/SaleBanner';
 import { devToolsEnabled } from '@/lib/dev-tools';
 
 export default async function AppLayout({
@@ -19,6 +20,7 @@ export default async function AppLayout({
     <>
       <AnalyticsProviders />
       {children}
+      <SaleBanner surface="portal" />
       {/* Local only — see lib/dev-tools.ts. Excluded from the tree in prod builds. */}
       {devToolsEnabled() && <DevStateBar locale={locale} />}
     </>

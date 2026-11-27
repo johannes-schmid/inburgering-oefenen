@@ -2917,5 +2917,20 @@
     "cta_h2": "Klaar om te oefenen?",
     "cta_text": "Maak 10 vragen per onderdeel, zonder account. Je ziet bij elke vraag de uitleg.",
     "cta_button": "Begin met gratis oefenen"
+  },
+  "sale": {
+    "aria": "Black Friday-actie",
+    "title": "Black Friday: {pct}% korting op je abonnement, elke maand",
+    "ends": "Actie stopt over",
+    "days": "{count, plural, one {# dag} other {# dagen}}",
+    "cta": "Bekijk de prijzen",
+    "close": "Sluiten",
+    "pb_note": "Black Friday: {pct}% korting op elke maand, zolang je abonnement loopt. Afsluiten kan tot en met maandag 30 november.",
+    "bar_title": "{pct}% korting op je abonnement, elke maand",
+    "unit_d": "d",
+    "unit_h": "u",
+    "unit_m": "m",
+    "unit_s": "s",
+    "bar_title_short": "{pct}% korting op je abonnement"
   }
 }

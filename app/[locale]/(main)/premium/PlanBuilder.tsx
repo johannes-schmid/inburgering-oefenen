@@ -2,14 +2,18 @@
 
 import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { ArrowRight, Check, Clock, X } from 'lucide-react';
+import { ArrowRight, BadgePercent, Check, Clock, X } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import CategoryMark from '@/components/horizon/CategoryMark';
 import ExamMark from '@/components/horizon/ExamMark';
 import GlasSwitch from '@/components/glas/Switch';
 import PayBadges from '../_components/glas/PayBadges';
 import type { Level, SkillSlug } from '@/data/skills';
+import { BLACK_FRIDAY } from '@/lib/black-friday';
+import { useSaleOffer } from '@/lib/use-sale-offer';
+import SalePrice from '@/components/site/SalePrice';
 import {
+  applyDiscount,
   BUNDLE_LIST_PRICE_CENTS,
   BUNDLE_PRICE_CENTS,
   MODULE_PRICE_CENTS,
@@ -64,9 +68,14 @@ export default function PlanBuilder({
   free: { examCount: number; graded: number };
 }) {
   const t = useTranslations('premium_page');
+  const ts = useTranslations('sale');
   const [selected, setSelected] = useState<ModuleSlug[]>([]);
+  // Black Friday: dezelfde regel als de checkout (`lib/sale.ts`), die de korting vanzelf toepast.
+  const sale = useSaleOffer() === true;
 
-  const total = priceForSelection(selected);
+  const listTotal = priceForSelection(selected);
+  const px = (cents: number) => (sale ? applyDiscount(cents, BLACK_FRIDAY.pct) : cents);
+  const total = px(listTotal);
   const saving = savingForSelection(selected);
 
   const names = useMemo(() => {
@@ -83,6 +92,12 @@ export default function PlanBuilder({
 
   return (
     <div className="g-pb">
+      {sale && (
+        <p className="g-pb-sale">
+          <BadgePercent aria-hidden="true" />
+          <span>{ts('pb_note', { pct: BLACK_FRIDAY.pct })}</span>
+        </p>
+      )}
       <div className="g-pb-plans">
         {/* ── Gratis ── */}
         <article className="g-pb-card g-pb-free">
@@ -134,7 +149,7 @@ export default function PlanBuilder({
             <article key={lvl.level} className="g-pb-card" data-featured={featured || undefined} data-active={inLevel.length > 0 || undefined}>
               {featured && (
                 <p className="g-pb-band">
-                  <span>{t('level_band', { bundle: euro(BUNDLE_PRICE_CENTS) })}</span>
+                  <span>{t('level_band', { bundle: euro(px(BUNDLE_PRICE_CENTS)) })}</span>
                   <s className="g-tnum">{euro(BUNDLE_LIST_PRICE_CENTS)}</s>
                 </p>
               )}
@@ -147,7 +162,7 @@ export default function PlanBuilder({
               </header>
 
               <div className="g-pb-price" aria-live="polite">
-                <span className="g-pb-amt g-tnum">{euro(inLevel.length ? levelTotal : MODULE_PRICE_CENTS)}</span>
+                <span className="g-pb-amt g-tnum"><SalePrice cents={inLevel.length ? levelTotal : MODULE_PRICE_CENTS} /></span>
                 <span className="g-pb-unit">
                   {inLevel.length ? t('level_total_note', { count: inLevel.length }) : t('level_from')}
                 </span>
@@ -157,7 +172,7 @@ export default function PlanBuilder({
                 {allOn
                   ? t('level_all_clear')
                   : bundleReachable
-                    ? t('level_all_btn', { bundle: euro(BUNDLE_PRICE_CENTS) })
+                    ? t('level_all_btn', { bundle: euro(px(BUNDLE_PRICE_CENTS)) })
                     : t('level_some_btn', { count: buyable.length })}
               </button>
 
@@ -181,7 +196,7 @@ export default function PlanBuilder({
                         <small>{m.available ? m.meta : t('row_unavailable')}</small>
                       </span>
                       <span className="g-pb-row-p g-tnum">
-                        {m.available ? euro(MODULE_PRICE_CENTS) : <Clock aria-hidden="true" />}
+                        {m.available ? <SalePrice cents={MODULE_PRICE_CENTS} /> : <Clock aria-hidden="true" />}
                       </span>
                     </button>
                   );
@@ -192,7 +207,7 @@ export default function PlanBuilder({
                 {levelSaving > 0
                   ? t('level_bundle_on', { saving: euro(levelSaving) })
                   : bundleReachable && inLevel.length === buyable.length - 1
-                    ? t('level_nudge', { diff: euro(BUNDLE_PRICE_CENTS - levelTotal) })
+                    ? t('level_nudge', { diff: euro(px(BUNDLE_PRICE_CENTS) - px(levelTotal)) })
                     : bundleReachable
                       ? t('level_bundle_hint')
                       : t('level_no_bundle')}
@@ -221,7 +236,7 @@ export default function PlanBuilder({
                   {a.note && <em>{a.note}</em>}
                 </div>
                 <span className="g-pb-addon-p g-tnum">
-                  {euro(MODULE_PRICE_CENTS)}<small>{t('per_month_short')}</small>
+                  <SalePrice cents={MODULE_PRICE_CENTS} /><small>{t('per_month_short')}</small>
                 </span>
                 <GlasSwitch checked={on} onClick={() => toggle(a.slug)} aria-labelledby={id} />
               </div>
@@ -237,6 +252,7 @@ export default function PlanBuilder({
             {selected.length === 0 ? t('bar_empty') : t('bar_count', { count: selected.length })}
           </span>
           <span className="g-pb-bar-total g-tnum">
+            {sale && listTotal > 0 && <s className="g-pb-bar-was">{euro(listTotal)}</s>}
             {euro(total)} <small>{t('bar_per_month')}</small>
           </span>
           {saving > 0 && <span className="g-pb-bar-save">{t('bar_saving', { saving: euro(saving) })}</span>}

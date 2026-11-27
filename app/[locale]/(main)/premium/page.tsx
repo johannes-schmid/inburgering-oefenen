@@ -28,6 +28,7 @@ import {
   modulesForLevel,
   onaModule,
 } from '@/lib/pricing';
+import SalePrice from '@/components/site/SalePrice';
 import PlanBuilder, { type BuilderAddOn, type BuilderLevel } from './PlanBuilder';
 import WhatYouGet from './WhatYouGet';
 import { langTag } from '@/lib/site';
@@ -399,12 +400,12 @@ export default async function PremiumPage({ params }: Props) {
               </div>
               <div className="g-phd g-c">
                 <b>{tP('col_module')}</b>
-                <span className="g-amt g-tnum">{price}<small>{tP('per_month_short')}</small></span>
+                <span className="g-amt g-tnum"><SalePrice cents={MODULE_PRICE_CENTS} /><small>{tP('per_month_short')}</small></span>
                 <a href="#pakket" className={glasButton({ variant: 'ghost', size: 'sm' })}>{tP('compare_pick')}</a>
               </div>
               <div className="g-phd g-c g-hl g-top">
                 <b>{tP('col_bundle')}</b>
-                <span className="g-amt g-tnum">{bundle}<small>{tP('per_month_short')}</small></span>
+                <span className="g-amt g-tnum"><SalePrice cents={BUNDLE_PRICE_CENTS} /><small>{tP('per_month_short')}</small></span>
                 <a href="#pakket" className={glasButton({ variant: 'oranje', size: 'sm' })}>{tP('compare_pick')}</a>
               </div>
               {groups.map((g, gi) => (

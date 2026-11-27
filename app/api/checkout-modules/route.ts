@@ -3,7 +3,7 @@ import createMollieClient, { SequenceType, type PaymentCreateParams } from '@mol
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { applyDiscount, euro, parseSelection, priceForSelection } from '@/lib/pricing';
-import { findDiscountCode } from '@/lib/discount-codes';
+import { resolveCheckoutDiscount } from '@/lib/sale';
 import { ONA_MODULE_ID } from '@/lib/entitlements';
 import { isOnaAvailable } from '@/lib/ona/access';
 import { listLiveSubscriptions } from '@/lib/subscriptions';
@@ -81,11 +81,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Ongeldige selectie.' }, { status: 400 });
   }
 
+  // Zonder getypte code krijgt wie niets open heeft tijdens de actie vanzelf de Black Friday-korting
+  // (`lib/sale.ts`); wie al iets heeft, krijgt hem ook met de code niet.
   const typedCode = typeof body.code === 'string' ? body.code.trim() : '';
-  const discount = typedCode ? findDiscountCode(typedCode) : null;
-  if (typedCode && !discount) {
+  const resolved = resolveCheckoutDiscount(typedCode, user.user_metadata ?? {});
+  if (!resolved.ok) {
     return NextResponse.json({ error: 'Deze kortingscode is niet geldig.', code: 'invalid_code' }, { status: 400 });
   }
+  const discount = resolved.discount;
   const amountCents = discount ? applyDiscount(listAmountCents, discount.pct) : listAmountCents;
 
   const locale = typeof body.locale === 'string' && /^[a-z]{2}$/.test(body.locale) ? body.locale : 'nl';

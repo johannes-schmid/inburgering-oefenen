@@ -19,6 +19,8 @@ import {
 } from '@/lib/pricing';
 import { track } from '@/lib/analytics';
 import { DISCOUNT_CODE_STORAGE_KEY, findDiscountCode, type DiscountCode } from '@/lib/discount-codes';
+import { BLACK_FRIDAY } from '@/lib/black-friday';
+import { SaleClock, useSaleClock } from '@/components/site/SaleBanner';
 
 export type PickerModule = {
   /** The full `level:skill` module id — what gets posted to checkout. */
@@ -99,16 +101,19 @@ export default function ModulePicker({
   locale,
   initialSelection,
   initialCode,
+  saleEligible,
   subscription,
 }: {
   modules: PickerModule[];
   locale: string;
   initialSelection: ModuleSlug[];
   initialCode: string | null;
+  /** Mag dit account de Black Friday-code gebruiken? De server rekent het opnieuw na. */
+  saleEligible: boolean;
   subscription: PickerSubscription | null;
 }) {
   if (subscription) return <ChangePicker modules={modules} locale={locale} subscription={subscription} initialAdd={initialSelection} />;
-  return <CheckoutPicker modules={modules} locale={locale} initialSelection={initialSelection} initialCode={initialCode} />;
+  return <CheckoutPicker modules={modules} locale={locale} initialSelection={initialSelection} initialCode={initialCode} saleEligible={saleEligible} />;
 }
 
 function CheckoutPicker({
@@ -116,14 +121,22 @@ function CheckoutPicker({
   locale,
   initialSelection,
   initialCode,
+  saleEligible,
 }: {
   modules: PickerModule[];
   locale: string;
   initialSelection: ModuleSlug[];
   initialCode: string | null;
+  saleEligible: boolean;
 }) {
+  // De actiecode alleen voor wie hem mag gebruiken; anders zou de kiezer een prijs tonen die de
+  // checkout weigert.
+  const usable = (code: unknown) => {
+    const found = findDiscountCode(code);
+    return found && (found.code !== BLACK_FRIDAY.code || saleEligible) ? found : null;
+  };
   const [selected, setSelected] = useState<ModuleSlug[]>(initialSelection);
-  const [discount, setDiscount] = useState<DiscountCode | null>(() => findDiscountCode(initialCode));
+  const [discount, setDiscount] = useState<DiscountCode | null>(() => usable(initialCode));
   const [codeInput, setCodeInput] = useState('');
   const [codeError, setCodeError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -163,14 +176,15 @@ function CheckoutPicker({
     }
     let remembered: string | null = null;
     try { remembered = localStorage.getItem(DISCOUNT_CODE_STORAGE_KEY); } catch {}
-    const found = findDiscountCode(remembered);
+    const found = usable(remembered);
     // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage bestaat pas na hydratie
     if (found) setDiscount(found);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `usable` leest alleen de vaste prop `saleEligible`
   }, [discount]);
 
   function applyCode(e: FormEvent) {
     e.preventDefault();
-    const found = findDiscountCode(codeInput);
+    const found = usable(codeInput);
     if (!found) {
       setCodeError('Deze kortingscode kennen we niet. Controleer de spelling.');
       return;
@@ -259,7 +273,9 @@ function CheckoutPicker({
         </button>
       </div>
       <div className="g-mp-code">
-        {discount ? (
+        {discount?.code === BLACK_FRIDAY.code ? (
+          <BlackFridayBlock />
+        ) : discount ? (
           <p className="g-mp-code-on">
             <BadgePercent aria-hidden />
             <span>
@@ -334,7 +350,9 @@ function CheckoutPicker({
                       <span className="g-mp-price">
                         {mod.owned
                           ? <em>{mod.until ? `Open tot ${day(mod.until)}` : 'Je hebt dit al'}</em>
-                          : <>{euro(MODULE_PRICE_CENTS)} <small>p/m</small></>}
+                          : discount
+                            ? <><s className="g-was">{euro(MODULE_PRICE_CENTS)}</s>{euro(applyDiscount(MODULE_PRICE_CENTS, discount.pct))} <small>p/m</small></>
+                            : <>{euro(MODULE_PRICE_CENTS)} <small>p/m</small></>}
                       </span>
                     </span>
                     <span className="g-tile-tick" aria-hidden>
@@ -358,7 +376,7 @@ function CheckoutPicker({
             Bespaar {BUNDLE_SAVING_PCT}% met alle vier de onderdelen
           </span>
           <p className="g-mp-bundle-price">
-            {euro(BUNDLE_PRICE_CENTS)}{' '}
+            {euro(discount ? applyDiscount(BUNDLE_PRICE_CENTS, discount.pct) : BUNDLE_PRICE_CENTS)}{' '}
             <s>{euro(BUNDLE_LIST_PRICE_CENTS)}</s> <small>p/m</small>
           </p>
           <button type="button" onClick={selectAll} className="g-btn g-btn-ghost g-btn-sm">
@@ -900,5 +918,32 @@ function IncludedDialog({ ref, modules }: { ref: Ref<HTMLDialogElement>; modules
         </footer>
       </div>
     </dialog>
+  );
+}
+
+/**
+ * De Black Friday-actie in de kiezer, groot en zwart zoals de balk erboven (keuze eigenaar: hier
+ * moet hij niet te missen zijn). Geen knop om hem te verwijderen: hij is automatisch toegepast en
+ * de checkout rekent hem toch opnieuw (`lib/sale.ts`).
+ */
+function BlackFridayBlock() {
+  const left = useSaleClock(true);
+  return (
+    <div className="g-mp-bf" role="note">
+      <div>
+        <span className="g-salebar-tag">Black Friday</span>
+        <p className="g-mp-bf-pct">−{BLACK_FRIDAY.pct}%<small>op je abonnement</small></p>
+        <p className="g-mp-bf-sub">
+          Elke maand, zolang je abonnement loopt. De korting is al toegepast op de prijzen hieronder.
+          Sluit af tot en met maandag 30 november.
+        </p>
+      </div>
+      {left && (
+        <div className="g-mp-bf-clock">
+          <span>Actie stopt over</span>
+          <SaleClock left={left} />
+        </div>
+      )}
+    </div>
   );
 }

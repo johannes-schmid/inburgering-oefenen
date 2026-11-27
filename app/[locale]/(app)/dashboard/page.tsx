@@ -9,7 +9,8 @@ import { cardProgress } from '@/lib/ona/rules';
 import { ONA_CARDS, ONA_CARD_COUNT } from '@/data/ona/cards';
 import { emptyLevelledProgress, fetchPortalProgress, fetchScoreTrend } from '@/lib/portal-progress';
 import { KNM, LEVELS, SKILLS, isFreeExamOf, isSkillSlug, levelLabel, skillsAtLevel } from '@/data/skills';
-import { euro, MODULE_PRICE_CENTS, totalExamsForLevel } from '@/lib/pricing';
+import { applyDiscount, euro, MODULE_PRICE_CENTS, totalExamsForLevel } from '@/lib/pricing';
+import { saleDiscountFor } from '@/lib/sale';
 import { fetchNextLessons, fetchResume, fetchWeek } from '@/lib/lessons/lessons-server';
 import { ExamMark, StatTile } from '@/components/glas';
 import AppShell from '../components/AppShell';
@@ -49,6 +50,9 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
    */
   const isGuest = !user;
   const meta = user?.user_metadata ?? {};
+  // Black Friday: dezelfde prijs als de checkout rekent (`lib/sale.ts`); een gast ziet hem ook.
+  const sale = saleDiscountFor(meta);
+  const modulePrice = euro(sale ? applyDiscount(MODULE_PRICE_CENTS, sale.pct) : MODULE_PRICE_CENTS);
 
   const onaLive = isOnaAvailable();
   const [progress, menu, resume, nextLessons, week, scores, onaState] = await Promise.all([
@@ -111,7 +115,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
         facts: `${t('card_parts', { n: skillsAtLevel(level).length })} · ${t('card_exams', { n: total })}`,
         /* Alleen waar het waar is: `isFreeExamOf` zegt per niveau of oefenexamen 1 gratis is. */
         freeLine: isFreeExamOf(level, 1) ? t('glas.mod_free_first') : null,
-        price: t('glas.price_per_part', { price: euro(MODULE_PRICE_CENTS) }),
+        price: t('glas.price_per_part', { price: modulePrice }),
       };
     }),
     {
@@ -125,7 +129,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
       base: `/${locale}/dashboard/knm`,
       facts: `${t('card_exams', { n: KNM.examCount })} · ${t('ov_minutes', { n: KNM.durationMinutes ?? 45 })}`,
       freeLine: isFreeExamOf(null, 1) ? t('glas.mod_free_first_knm') : null,
-      price: t('glas.price_month', { price: euro(MODULE_PRICE_CENTS) }),
+      price: t('glas.price_month', { price: modulePrice }),
     },
   ];
 

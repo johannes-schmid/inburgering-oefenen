@@ -1,6 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import SaleBanner, { SALE_PREPAINT_SCRIPT } from '@/components/site/SaleBanner';
 import AnalyticsProviders from '@/components/AnalyticsProviders';
 import { devToolsEnabled } from '@/lib/dev-tools';
 
@@ -24,6 +25,9 @@ export default async function MainLayout({
   return (
     <>
       <AnalyticsProviders />
+      {/* Vóór de nav: reserveert de ruimte van de Black Friday-balk vóór de eerste paint. */}
+      <script dangerouslySetInnerHTML={{ __html: SALE_PREPAINT_SCRIPT }} />
+      <SaleBanner surface="public" />
       <Nav />
       {/* Geen Suspense-grens met een loader om de pagina heen. Met die grens schreef React de
           shell — nav, loader, footer — eerst uit en zette de pagina-inhoud pas aan het einde van
