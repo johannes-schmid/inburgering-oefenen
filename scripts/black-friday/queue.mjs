@@ -8,7 +8,11 @@
  *   node scripts/black-friday/queue.mjs                                # droog, lokale stack
  *   node scripts/black-friday/queue.mjs --target=production            # droog, tegen productie
  *   node scripts/black-friday/queue.mjs --target=production --write    # echt
+ *   node scripts/black-friday/queue.mjs --target=production --write --now   # alles meteen due
  *   node scripts/black-friday/queue.mjs --test=jij@voorbeeld.nl --write
+ *
+ * Met `--now` staat elke rij meteen klaar en is er geen limiet per run; roep dan zelf
+ * `/api/send-campaign-emails` aan (met CRON_SECRET) tot hij `processed: 0` meldt.
  *
  * Valt eruit: wie ooit betaald heeft (een `paid`-betaling, een module of een oud pakket in de
  * metadata), wie zich ooit heeft uitgeschreven, de admins, en wie al een `black_friday`-rij heeft
@@ -34,6 +38,7 @@ const args = Object.fromEntries(process.argv.slice(2).map(a => {
 const WRITE = args.write === true;
 const TARGET = args.target === 'production' ? 'production' : 'local';
 const PER_DAY = Number(args['per-day'] ?? 80);
+const NOW = args.now === true;
 
 function readEnv(path) {
   const out = {};
@@ -156,11 +161,12 @@ for (const u of users) {
 contacts.sort((a, b) => b.lastSeen.localeCompare(a.lastSeen));
 
 const runs = cronRuns();
-const capacity = runs.length * PER_DAY;
+const capacity = NOW ? contacts.length : runs.length * PER_DAY;
+const nowIso = new Date().toISOString();
 const rows = contacts.slice(0, capacity).map((c, i) => ({
   email: c.email,
   campaign_type: CAMPAIGN,
-  scheduled_for: dueAt(runs[Math.floor(i / PER_DAY)]),
+  scheduled_for: NOW ? nowIso : dueAt(runs[Math.floor(i / PER_DAY)]),
   payload: { firstName: c.firstName, locale: c.locale, source: 'black_friday' },
 }));
 
